@@ -6,6 +6,12 @@ A cross-platform Sudoku application built with Flutter, "vibe coded" using **Ant
 
 This project is a modern, responsive Sudoku game designed to run on Windows, macOS, Linux, and Web. It demonstrates a clean architecture approach with `Provider` for state management and includes a custom-built responsive UI.
 
+## Live Demo
+
+Play the game directly in your browser:
+**[Sudoku: Always Free - Web Version](https://Will-Beninger.github.io/sudoku/)**
+
+
 ## Features
 
   - **Cross-Platform**: Runs natively on Windows, macOS, Linux, Android, and Web.
