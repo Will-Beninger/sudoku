@@ -1,4 +1,4 @@
-# Sudoku PoC
+# Sudoku: Always Free
 
 A cross-platform Sudoku application built with Flutter, "vibe coded" using **Antigravity**.
 
