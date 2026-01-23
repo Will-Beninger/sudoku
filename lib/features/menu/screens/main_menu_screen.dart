@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku_poc/features/menu/screens/level_select_screen.dart';
-import 'package:sudoku_poc/features/settings/theme_provider.dart';
+import 'package:sudoku_poc/features/settings/settings_provider.dart';
+import 'package:sudoku_poc/features/settings/screens/options_screen.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -15,10 +16,11 @@ class MainMenuScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sudoku'),
         actions: [
-          Consumer<ThemeProvider>(
-            builder: (context, theme, child) => IconButton(
-              icon: Icon(theme.isDarkMode ? Icons.light_mode : Icons.dark_mode),
-              onPressed: theme.toggleTheme,
+          Consumer<SettingsProvider>(
+            builder: (context, settings, child) => IconButton(
+              icon: Icon(
+                  settings.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+              onPressed: settings.toggleTheme,
             ),
           ),
         ],
@@ -53,6 +55,17 @@ class MainMenuScreen extends StatelessWidget {
                 _showStatsDialog(context);
               },
               child: const Text('Statistics'),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const OptionsScreen()),
+                );
+              },
+              child: const Text('Options'),
             ),
             const SizedBox(height: 16),
             TextButton(

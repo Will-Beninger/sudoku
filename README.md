@@ -13,6 +13,10 @@ This project is a modern, responsive Sudoku game designed to run on Windows, mac
     - Multi-Level packs managed via JSON. [Read Format Spec](PUZZLE_FORMAT.md)
     - Difficulty selection (Easy, Medium, Hard, Expert).
     - Persistent progress tracking (Completed levels, Best Times).
+  - **Options & Customization**:
+    - **Dark Mode**: Improved visibility with high-contrast grid lines.
+    - **Highlighting**: Toggleable Row/Column and Same Number highlighting.
+    - **In-Game Settings**: Access options without leaving the puzzle.
   - **Responsive UI**:
     - Scales down gracefully on smaller screens using `FittedBox`.
   - **Adaptive Layout**: Automatically switches between Portrait (stacked) and Landscape (side-by-side) modes based on window aspect ratio and width (>900px).

@@ -6,7 +6,8 @@ import 'package:sudoku_poc/features/game/widgets/game_controls_widget.dart';
 import 'package:sudoku_poc/features/game/widgets/sudoku_board_widget.dart';
 import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku_poc/features/game/widgets/win_dialog_widget.dart';
-import 'package:sudoku_poc/features/settings/theme_provider.dart';
+import 'package:sudoku_poc/features/settings/settings_provider.dart';
+import 'package:sudoku_poc/features/settings/widgets/options_list_widget.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -99,30 +100,6 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Listen for win state
-    final isWon = context.select<GameProvider, bool>((g) => g.isWon);
-    if (isWon) {
-      // Need to show dialog after build
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // Simple check to ensure we don't spam dialogs if we were already showing it.
-        // For PoC, simple showDialog is enough, provided we handle restart correctly.
-        // A better way is to have a one-time event, but this works.
-
-        // Wait, addPostFrameCallback will run every time we rebuild if isWon is true.
-        // We should check if dialog is already shown?
-        // Or better: The Provider shouldn't notify repeatedly?
-        // Let's rely on the user Restarting to reset isWon.
-        // Actually, preventing duplicate dialogs is tricky here without a separate "event" stream.
-        // HACK: We will check if we are *just* becoming won? No.
-        // Let's just assume for PoC we show it once.
-        // To do this safely: The GameProvider could emit a 'WinEvent' via stream, or we check a local flag.
-      });
-    }
-
-    // Better approach for Win Dialog:
-    // Use a listener on the provider outside the build method or inside a specialized widget listener.
-    // For now, let's keep it simple: The Logic part is "implemented", user can confirm.
-
     return KeyboardListener(
       focusNode: _focusNode,
       onKeyEvent: _handleKeyEvent,
@@ -130,12 +107,26 @@ class _GameScreenState extends State<GameScreen> {
         appBar: AppBar(
           title: const Text('Sudoku PoC'),
           actions: [
-            Consumer<ThemeProvider>(
-              builder: (context, theme, child) => IconButton(
-                icon:
-                    Icon(theme.isDarkMode ? Icons.light_mode : Icons.dark_mode),
-                onPressed: theme.toggleTheme,
-              ),
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Options'),
+                    content: const SizedBox(
+                      width: 300,
+                      child: SingleChildScrollView(child: OptionsListWidget()),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ],
         ),

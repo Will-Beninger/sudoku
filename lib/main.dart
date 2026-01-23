@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku_poc/features/game/game_provider.dart';
 import 'package:sudoku_poc/features/menu/screens/main_menu_screen.dart';
-import 'package:sudoku_poc/features/settings/theme_provider.dart';
+import 'package:sudoku_poc/features/settings/settings_provider.dart';
 
 void main() {
   runApp(const SudokuApp());
@@ -16,11 +16,11 @@ class SudokuApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()),
         ChangeNotifierProvider(create: (_) => GameProvider()),
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
+      child: Consumer<SettingsProvider>(
+        builder: (context, settings, child) {
           return MaterialApp(
             title: 'Sudoku PoC',
             theme: ThemeData(
@@ -35,7 +35,7 @@ class SudokuApp extends StatelessWidget {
                   seedColor: Colors.blue, brightness: Brightness.dark),
               textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
             ),
-            themeMode: themeProvider.themeMode,
+            themeMode: settings.themeMode,
             home: const MainMenuScreen(),
           );
         },

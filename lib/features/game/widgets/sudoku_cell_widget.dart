@@ -4,6 +4,8 @@ import 'package:sudoku_poc/core/sudoku/cell.dart';
 class SudokuCellWidget extends StatelessWidget {
   final SudokuCell cell;
   final bool isSelected;
+  final bool isHighlighted; // Row/Col highlight
+  final bool isSameNumber; // Same number highlight
   final VoidCallback onTap;
   final Border border;
 
@@ -11,6 +13,8 @@ class SudokuCellWidget extends StatelessWidget {
     super.key,
     required this.cell,
     required this.isSelected,
+    this.isHighlighted = false,
+    this.isSameNumber = false,
     required this.onTap,
     required this.border,
   });
@@ -20,9 +24,16 @@ class SudokuCellWidget extends StatelessWidget {
     // Determine background color
     Color? bgColor;
     if (isSelected) {
+      bgColor = Colors.blue.withOpacity(0.5);
+    } else if (isSameNumber) {
       bgColor = Colors.blue.withOpacity(0.3);
+    } else if (isHighlighted) {
+      bgColor = Colors.blue.withOpacity(0.1);
     } else if (cell.isFixed) {
-      bgColor = Colors.grey.withOpacity(0.2);
+      // Adaptive grey for light/dark mode
+      bgColor = Theme.of(context).brightness == Brightness.dark
+          ? Colors.white.withOpacity(0.1)
+          : Colors.grey.withOpacity(0.2);
     }
 
     return GestureDetector(
