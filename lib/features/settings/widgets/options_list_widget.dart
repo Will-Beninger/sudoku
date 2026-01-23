@@ -41,6 +41,14 @@ class OptionsListWidget extends StatelessWidget {
               onChanged: settings.setHighlightSameNumber,
               secondary: const Icon(Icons.format_list_numbered),
             ),
+            SwitchListTile(
+              title: const Text('Grey Out Completed Numbers'),
+              subtitle: const Text(
+                  'Dims number pad buttons when they are fully placed on the board'),
+              value: settings.greyOutCompletedNumbers,
+              onChanged: settings.setGreyOutCompletedNumbers,
+              secondary: const Icon(Icons.low_priority),
+            ),
           ],
         );
       },

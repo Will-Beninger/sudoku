@@ -46,6 +46,7 @@ class SudokuBoardWidget extends StatelessWidget {
                 // Highlighting Logic
                 bool isHighlighted = false;
                 bool isSameNumber = false;
+                bool isConflicting = false;
 
                 if (settings.highlightRowCol) {
                   if (game.selectedRow == row || game.selectedCol == col) {
@@ -63,6 +64,11 @@ class SudokuBoardWidget extends StatelessWidget {
                   if (selectedValue != null && cell.value == selectedValue) {
                     isSameNumber = true;
                   }
+                }
+
+                // Conflict Logic
+                if (game.conflictingCells.contains((r: row, c: col))) {
+                  isConflicting = true;
                 }
 
                 // Border logic for 3x3 grids using thick borders
@@ -83,6 +89,7 @@ class SudokuBoardWidget extends StatelessWidget {
                   isSelected: isSelected,
                   isHighlighted: isHighlighted,
                   isSameNumber: isSameNumber,
+                  isConflicting: isConflicting,
                   onTap: () => game.selectCell(row, col),
                   border: Border(
                     right:

@@ -6,6 +6,7 @@ class SudokuCellWidget extends StatelessWidget {
   final bool isSelected;
   final bool isHighlighted; // Row/Col highlight
   final bool isSameNumber; // Same number highlight
+  final bool isConflicting;
   final VoidCallback onTap;
   final Border border;
 
@@ -15,6 +16,7 @@ class SudokuCellWidget extends StatelessWidget {
     required this.isSelected,
     this.isHighlighted = false,
     this.isSameNumber = false,
+    this.isConflicting = false,
     required this.onTap,
     required this.border,
   });
@@ -38,14 +40,24 @@ class SudokuCellWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: bgColor,
-          border: border,
-        ),
-        child: Center(
-          child: _buildContent(context),
-        ),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: bgColor,
+              border: border,
+            ),
+            child: Center(
+              child: _buildContent(context),
+            ),
+          ),
+          if (isConflicting)
+            const Positioned(
+              top: 2,
+              right: 2,
+              child: Icon(Icons.close, color: Colors.red, size: 12),
+            ),
+        ],
       ),
     );
   }

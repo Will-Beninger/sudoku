@@ -17,6 +17,10 @@ This project is a modern, responsive Sudoku game designed to run on Windows, mac
     - **Dark Mode**: Improved visibility with high-contrast grid lines.
     - **Highlighting**: Toggleable Row/Column and Same Number highlighting.
     - **In-Game Settings**: Access options without leaving the puzzle.
+  - **Gameplay Aids**:
+    - **Smart Number Pad**: Disabled buttons for fully placed numbers (toggleable).
+    - **Conflict Check**: Validate your current moves against Sudoku rules.
+    - **Clear Cell**: Easily remove mistakes.
   - **Responsive UI**:
     - Scales down gracefully on smaller screens using `FittedBox`.
   - **Adaptive Layout**: Automatically switches between Portrait (stacked) and Landscape (side-by-side) modes based on window aspect ratio and width (>900px).

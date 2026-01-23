@@ -5,12 +5,14 @@ class SettingsProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   bool _highlightRowCol = false;
   bool _highlightSameNumber = false;
+  bool _greyOutCompletedNumbers = true;
   late SharedPreferences _prefs;
 
   ThemeMode get themeMode => _themeMode;
   bool get isDarkMode => _themeMode == ThemeMode.dark;
   bool get highlightRowCol => _highlightRowCol;
   bool get highlightSameNumber => _highlightSameNumber;
+  bool get greyOutCompletedNumbers => _greyOutCompletedNumbers;
 
   SettingsProvider() {
     _loadSettings();
@@ -25,6 +27,7 @@ class SettingsProvider extends ChangeNotifier {
 
     _highlightRowCol = _prefs.getBool('highlight_row_col') ?? false;
     _highlightSameNumber = _prefs.getBool('highlight_same_number') ?? false;
+    _greyOutCompletedNumbers = _prefs.getBool('grey_out_completed') ?? true;
 
     notifyListeners();
   }
@@ -49,6 +52,12 @@ class SettingsProvider extends ChangeNotifier {
   void setHighlightSameNumber(bool value) {
     _highlightSameNumber = value;
     _prefs.setBool('highlight_same_number', value);
+    notifyListeners();
+  }
+
+  void setGreyOutCompletedNumbers(bool value) {
+    _greyOutCompletedNumbers = value;
+    _prefs.setBool('grey_out_completed', value);
     notifyListeners();
   }
 }

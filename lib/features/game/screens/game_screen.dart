@@ -6,7 +6,6 @@ import 'package:sudoku_poc/features/game/widgets/game_controls_widget.dart';
 import 'package:sudoku_poc/features/game/widgets/sudoku_board_widget.dart';
 import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku_poc/features/game/widgets/win_dialog_widget.dart';
-import 'package:sudoku_poc/features/settings/settings_provider.dart';
 import 'package:sudoku_poc/features/settings/widgets/options_list_widget.dart';
 
 class GameScreen extends StatefulWidget {

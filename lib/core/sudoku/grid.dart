@@ -38,7 +38,13 @@ class SudokuGrid extends Equatable {
     // However, to be safe, let's respect isFixed here or assume caller checks.
     // Let's assume caller checks for UI interaction.
 
-    newRows[row][col] = newRows[row][col].copyWith(value: value);
+    final oldCell = newRows[row][col];
+    newRows[row][col] = SudokuCell(
+      value: value,
+      isFixed: oldCell.isFixed,
+      isValid: oldCell.isValid,
+      notes: oldCell.notes,
+    );
     return SudokuGrid(rows: newRows);
   }
 

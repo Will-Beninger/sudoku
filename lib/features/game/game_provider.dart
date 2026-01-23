@@ -18,6 +18,11 @@ class GameProvider extends ChangeNotifier {
   Timer? _hintCooldownTimer;
   int _hintCooldownSeconds = 0;
 
+  // Conflict Check
+  Timer? _conflictCooldownTimer;
+  int _conflictCooldownSeconds = 0;
+  final Set<({int r, int c})> _conflictingCells = {};
+
   // Selection
   int? _selectedRow;
   int? _selectedCol;
@@ -39,6 +44,13 @@ class GameProvider extends ChangeNotifier {
   bool get isHintActive => _hintCooldownSeconds > 0;
   int get hintCooldown => _hintCooldownSeconds;
 
+  bool get isConflictCheckActive => _conflictCooldownSeconds > 0;
+  int get conflictCooldown => _conflictCooldownSeconds;
+  Set<({int r, int c})> get conflictingCells => _conflictingCells;
+
+  String? _feedbackMessage;
+  String? get feedbackMessage => _feedbackMessage;
+
   GameProvider() {
     // No auto-start
   }
@@ -47,6 +59,7 @@ class GameProvider extends ChangeNotifier {
   void dispose() {
     _timer?.cancel();
     _hintCooldownTimer?.cancel();
+    _conflictCooldownTimer?.cancel();
     super.dispose();
   }
 
@@ -64,7 +77,10 @@ class GameProvider extends ChangeNotifier {
   void _restartGameInternal(Puzzle puzzle) {
     _timer?.cancel();
     _hintCooldownTimer?.cancel();
+    _conflictCooldownTimer?.cancel();
     _hintCooldownSeconds = 0;
+    _conflictCooldownSeconds = 0;
+    _conflictingCells.clear();
 
     _isLoading = true;
     _isWon = false;
@@ -90,6 +106,7 @@ class GameProvider extends ChangeNotifier {
   void selectCell(int row, int col) {
     _selectedRow = row;
     _selectedCol = col;
+    _feedbackMessage = null;
     notifyListeners();
   }
 
@@ -126,6 +143,8 @@ class GameProvider extends ChangeNotifier {
       }
       _grid = _grid.updateCellNotes(_selectedRow!, _selectedCol!, newNotes);
     } else {
+      _conflictingCells.clear(); // Clear old conflicts on new input
+      _feedbackMessage = null;
       _grid = _grid.updateCell(_selectedRow!, _selectedCol!, number);
 
       // Check Win
@@ -143,6 +162,8 @@ class GameProvider extends ChangeNotifier {
     if (_grid.rows[_selectedRow!][_selectedCol!].isFixed) return;
 
     _recordHistory();
+    _conflictingCells.clear(); // Clear old conflicts
+    _feedbackMessage = null;
     _grid = _grid.updateCell(_selectedRow!, _selectedCol!, null);
     notifyListeners();
   }
@@ -196,5 +217,105 @@ class GameProvider extends ChangeNotifier {
       }
       notifyListeners();
     });
+  }
+
+  // --- Conflict Checker ---
+
+  void checkConflicts() {
+    if (isConflictCheckActive || _isWon) return;
+
+    _conflictingCells.clear();
+    final rows = _grid.rows;
+
+    // Check every cell against every other cell in its row, col, and box
+    for (int r = 0; r < 9; r++) {
+      for (int c = 0; c < 9; c++) {
+        final cell = rows[r][c];
+        if (cell.value == null) continue;
+
+        // Skip default/fixed cells? Rule says: "only place the red X on user entries"
+        // But we need to check IF a user entry conflicts with anything.
+        // So we iterate user entries, and check if they have conflicts.
+
+        // Actually, we should check ALL cells to find conflicts, but only ADD to set if !isFixed.
+
+        bool hasConflict = false;
+
+        // Check Row
+        for (int k = 0; k < 9; k++) {
+          if (k == c) continue;
+          if (rows[r][k].value == cell.value) {
+            hasConflict = true;
+            break;
+          }
+        }
+
+        // Check Col
+        if (!hasConflict) {
+          for (int k = 0; k < 9; k++) {
+            if (k == r) continue;
+            if (rows[k][c].value == cell.value) {
+              hasConflict = true;
+              break;
+            }
+          }
+        }
+
+        // Check Box
+        if (!hasConflict) {
+          final boxRow = (r ~/ 3) * 3;
+          final boxCol = (c ~/ 3) * 3;
+          for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+              final br = boxRow + i;
+              final bc = boxCol + j;
+              if (br == r && bc == c) continue;
+              if (rows[br][bc].value == cell.value) {
+                hasConflict = true;
+                break;
+              }
+            }
+            if (hasConflict) break;
+          }
+        }
+
+        if (hasConflict && !cell.isFixed) {
+          _conflictingCells.add((r: r, c: c));
+        }
+      }
+    }
+
+    if (_conflictingCells.isEmpty) {
+      _feedbackMessage = "No Logic Errors Detected!";
+    } else {
+      _feedbackMessage = null;
+    }
+
+    _startConflictCooldown();
+    notifyListeners();
+  }
+
+  void _startConflictCooldown() {
+    _conflictCooldownSeconds = 10;
+    _conflictCooldownTimer =
+        Timer.periodic(const Duration(seconds: 1), (timer) {
+      _conflictCooldownSeconds--;
+      if (_conflictCooldownSeconds <= 0) {
+        timer.cancel();
+      }
+      notifyListeners();
+    });
+  }
+
+  Set<int> getCompletedNumbers() {
+    final counts = <int, int>{};
+    for (var row in _grid.rows) {
+      for (var cell in row) {
+        if (cell.value != null) {
+          counts[cell.value!] = (counts[cell.value!] ?? 0) + 1;
+        }
+      }
+    }
+    return counts.entries.where((e) => e.value >= 9).map((e) => e.key).toSet();
   }
 }

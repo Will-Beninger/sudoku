@@ -47,9 +47,17 @@ class GameControlsWidget extends StatelessWidget {
                   icon: const Icon(Icons.undo),
                   tooltip: 'Undo',
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 8),
+                // Clear Cell
+                IconButton(
+                  onPressed: () => game.clearCell(),
+                  icon: const Icon(Icons.delete_outline),
+                  tooltip: 'Clear Cell',
+                ),
+                const SizedBox(width: 8),
+                // Hint
                 const HintButtonWidget(),
-                const SizedBox(width: 16),
+                const SizedBox(width: 8),
                 // Note Toggle
                 IconButton(
                   onPressed: () => game.toggleNoteMode(),
@@ -59,6 +67,36 @@ class GameControlsWidget extends StatelessWidget {
                       : null,
                   tooltip: 'Toggle Note Mode',
                 ),
+                const SizedBox(width: 8),
+                // Conflict Check
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    IconButton(
+                        onPressed: game.isConflictCheckActive
+                            ? null
+                            : () => game.checkConflicts(),
+                        icon: const Icon(Icons.spellcheck),
+                        tooltip: 'Check Logic'),
+                    if (game.isConflictCheckActive)
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${game.conflictCooldown}',
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.white),
+                          ),
+                        ),
+                      )
+                  ],
+                ),
               ],
             );
           }),
@@ -66,7 +104,6 @@ class GameControlsWidget extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        // Number Pad
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: NumberPadWidget(
@@ -74,6 +111,23 @@ class GameControlsWidget extends StatelessWidget {
               context.read<GameProvider>().inputNumber(number);
             },
           ),
+        ),
+
+        // Feedback Message
+        Consumer<GameProvider>(
+          builder: (_, game, __) {
+            if (game.feedbackMessage == null) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Text(
+                game.feedbackMessage!,
+                style: const TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ),
+            );
+          },
         ),
       ],
     );
