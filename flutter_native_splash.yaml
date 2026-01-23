@@ -1,8 +1,10 @@
 flutter_native_splash:
   color: "#121212"
-  image: assets/splash/splash_branding.png
+  image: assets/icon/app_icon.png
+  branding: assets/splash/splash_branding.png # Optional: Use branding for older Androids providing more space, but icon is safer
   android_12:
     color: "#121212"
-    image: assets/splash/splash_branding.png
-  web: false # Web doesn't support native splash in the same way usually, deferring
+    image: assets/icon/app_icon.png
+    icon_background_color: "#121212"
+  web: false 
   fullscreen: true

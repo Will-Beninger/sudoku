@@ -85,8 +85,8 @@ class _SplashScreenWrapperState extends State<_SplashScreenWrapper> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Use the App Icon which we know works
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+            // Use ClipOval to match Android 12's circular native splash mask
+            ClipOval(
               child: Image.asset(
                 'assets/icon/app_icon.png',
                 width: 120,
@@ -100,7 +100,7 @@ class _SplashScreenWrapperState extends State<_SplashScreenWrapper> {
                 color: Colors.white,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Inter', // Ensuring font style matches if possible
+                fontFamily: 'Inter',
               ),
             ),
             const SizedBox(height: 16),
