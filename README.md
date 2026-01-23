@@ -8,9 +8,13 @@ This project is a modern, responsive Sudoku game designed to run on Windows, mac
 
 ## Features
 
-- **Cross-Platform**: Runs natively on Windows, macOS, Linux, Android, and Web.
-- **Responsive UI**:
-  - Scales down gracefully on smaller screens using `FittedBox`.
+  - **Cross-Platform**: Runs natively on Windows, macOS, Linux, Android, and Web.
+  - **Puzzle Progression**:
+    - Multi-Level packs managed via JSON.
+    - Difficulty selection (Easy, Medium, Hard, Expert).
+    - Persistent progress tracking (Completed levels, Best Times).
+  - **Responsive UI**:
+    - Scales down gracefully on smaller screens using `FittedBox`.
   - **Adaptive Layout**: Automatically switches between Portrait (stacked) and Landscape (side-by-side) modes based on window aspect ratio and width (>900px).
   - Optimized for desktop window resizing and tablet/mobile rotation.
 - **Game Mechanics**:

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sudoku_poc/features/game/game_provider.dart';
 import 'package:sudoku_poc/features/game/widgets/game_controls_widget.dart';
 import 'package:sudoku_poc/features/game/widgets/sudoku_board_widget.dart';
+import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku_poc/features/game/widgets/win_dialog_widget.dart';
 import 'package:sudoku_poc/features/settings/theme_provider.dart';
 
@@ -226,7 +227,21 @@ class _WinReflectorState extends State<_WinReflector> {
 
     if (game.isWon && !_dialogShown) {
       _dialogShown = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        VoidCallback? onNext;
+        if (game.currentPuzzle != null) {
+          final repo = await PuzzleRepository.create();
+          final nextPuzzle = await repo.getNextPuzzle(game.currentPuzzle!.id);
+          if (nextPuzzle != null) {
+            onNext = () {
+              game.startPuzzle(nextPuzzle);
+              _dialogShown = false;
+            };
+          }
+        }
+
+        if (!context.mounted) return;
+
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -236,6 +251,7 @@ class _WinReflectorState extends State<_WinReflector> {
               game.restartGame();
               _dialogShown = false;
             },
+            onNextLevel: onNext,
           ),
         );
       });

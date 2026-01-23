@@ -2,11 +2,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:sudoku_poc/features/game/game_provider.dart';
 
+import 'package:sudoku_poc/core/data/models/puzzle.dart';
+
 void main() {
   group('GameProvider', () {
     test('restartGame resets isWon immediately', () {
       fakeAsync((async) {
         final game = GameProvider();
+        const puzzle = Puzzle(
+          id: 'test',
+          difficulty: Difficulty.easy,
+          initialBoard:
+              "000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          solutionBoard:
+              "000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        );
+        game.startPuzzle(puzzle);
+
         async.elapse(const Duration(milliseconds: 500)); // Load game
 
         // Simulate win scenarios manually or by property if possible,
@@ -22,9 +34,7 @@ void main() {
 
         expect(game.isWon, false,
             reason: 'isWon should be false immediately after restart');
-        expect(game.isLoading, true);
-
-        async.elapse(const Duration(milliseconds: 500));
+        // Loading happens synchronously now
         expect(game.isLoading, false);
       });
     });

@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sudoku_poc/core/data/models/puzzle.dart';
+import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku_poc/core/sudoku/grid.dart';
 
 class GameProvider extends ChangeNotifier {
   SudokuGrid _grid = SudokuGrid.empty();
-  bool _isLoading = true;
+  bool _isLoading = false;
   bool _isWon = false;
+  Puzzle? _currentPuzzle;
 
   // Timer
   Timer? _timer;
@@ -15,7 +18,6 @@ class GameProvider extends ChangeNotifier {
   Timer? _hintCooldownTimer;
   int _hintCooldownSeconds = 0;
 
-  // Selection
   // Selection
   int? _selectedRow;
   int? _selectedCol;
@@ -32,12 +34,13 @@ class GameProvider extends ChangeNotifier {
   int? get selectedCol => _selectedCol;
   bool get isNoteMode => _isNoteMode;
   bool get canUndo => _history.isNotEmpty;
+  Puzzle? get currentPuzzle => _currentPuzzle;
 
   bool get isHintActive => _hintCooldownSeconds > 0;
   int get hintCooldown => _hintCooldownSeconds;
 
   GameProvider() {
-    _startNewGame();
+    // No auto-start
   }
 
   @override
@@ -47,54 +50,34 @@ class GameProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  void _startNewGame() {
-    _isLoading = true;
-    _isWon = false;
-    _history.clear();
-    notifyListeners();
-
-    // Mock loading a puzzle (Simulation of Async)
-    Future.delayed(const Duration(milliseconds: 500), () {
-      // Simple Puzzle Mock
-      // A full valid solution for testing wins:
-      // 5 3 4 | 6 7 8 | 9 1 2
-      // 6 7 2 | 1 9 5 | 3 4 8
-      // 1 9 8 | 3 4 2 | 5 6 7
-      // ---------------------
-      // 8 5 9 | 7 6 1 | 4 2 3
-      // 4 2 6 | 8 5 3 | 7 9 1
-      // 7 1 3 | 9 2 4 | 8 5 6
-      // ---------------------
-      // 9 6 1 | 5 3 7 | 2 8 4
-      // 2 8 7 | 4 1 9 | 6 3 5
-      // 3 4 5 | 2 8 6 | 1 7 9
-
-      // We will clear a few cells to make it playable.
-      final fullBoard = [
-        [5, 3, 4, 6, 7, 8, 9, 1, 2],
-        [6, 7, 2, 1, 9, 5, 3, 4, 8],
-        [1, 9, 8, 3, 4, 2, 5, 6, 7],
-        [8, 5, 9, 7, 6, 1, 4, 2, 3],
-        [4, 2, 6, 8, 5, 3, 7, 9, 1],
-        [7, 1, 3, 9, 2, 4, 8, 5, 6],
-        [9, 6, 1, 5, 3, 7, 2, 8, 4],
-        [2, 8, 7, 4, 1, 9, 6, 3, 0],
-        [3, 4, 5, 2, 8, 6, 1, 7, 0], // Last one empty for quick win test
-      ];
-      _grid = SudokuGrid.fromIntList(fullBoard);
-      _isLoading = false;
-      _isWon = false;
-      _elapsedTime = Duration.zero;
-      _startTimer();
-      notifyListeners();
-    });
+  void startPuzzle(Puzzle puzzle) {
+    _currentPuzzle = puzzle;
+    _restartGameInternal(puzzle);
   }
 
   void restartGame() {
+    if (_currentPuzzle != null) {
+      _restartGameInternal(_currentPuzzle!);
+    }
+  }
+
+  void _restartGameInternal(Puzzle puzzle) {
     _timer?.cancel();
     _hintCooldownTimer?.cancel();
     _hintCooldownSeconds = 0;
-    _startNewGame();
+
+    _isLoading = true;
+    _isWon = false;
+    _history.clear();
+    _elapsedTime = Duration.zero;
+    notifyListeners();
+
+    // Initialize Grid from Puzzle Data (sync for now, but keeping structure valid)
+    _grid = SudokuGrid.fromIntList(puzzle.initialGrid);
+
+    _isLoading = false;
+    _startTimer();
+    notifyListeners();
   }
 
   void _startTimer() {
@@ -160,22 +143,24 @@ class GameProvider extends ChangeNotifier {
     if (_grid.rows[_selectedRow!][_selectedCol!].isFixed) return;
 
     _recordHistory();
-    // Clearing cell clears both value and notes usually, or just value?
-    // Let's assume it clears value.
-    // Ideally it should probably clear value if present, else notes?
-    // For simplicity, let's clear value.
     _grid = _grid.updateCell(_selectedRow!, _selectedCol!, null);
     notifyListeners();
   }
 
-  void _handleWin() {
+  void _handleWin() async {
     _isWon = true;
     _timer?.cancel();
     _hintCooldownTimer?.cancel();
+
+    if (_currentPuzzle != null) {
+      final repo = await PuzzleRepository.create();
+      await repo.completeLevel(_currentPuzzle!.id, _elapsedTime);
+    }
+    notifyListeners();
   }
 
   void useHint() {
-    if (isHintActive || _isWon) return;
+    if (isHintActive || _isWon || _currentPuzzle == null) return;
 
     // Find a random empty spot
     final pos = _grid.getRandomEmptyPosition();
@@ -183,26 +168,15 @@ class GameProvider extends ChangeNotifier {
 
     final (r, c) = pos;
 
-    // In a real app, we'd solve the board to find the CORRECT number.
-    // Here, since we loaded a pre-solved board with holes, we know the answer
-    // based on my mock data above.
-    // BUT, wait, I hardcoded the mock data locally in _startNewGame.
-    // To make this robust for the PoC, let's just cheat and look at what the
-    // hardcoded value SHOULD be.
-    // Since I removed (8,8) which was 9.
-    // For specific logic, normally the grid would store the "solution" separately.
+    // Get correct value from solution grid
+    final solutionGrid = _currentPuzzle!.solutionGrid;
+    final correctVal = solutionGrid[r][c];
 
-    // HACK for PoC: Just fill 9 if it's (8,8).
-    // Or better, let's just pick a valid number for that spot.
-    // Since the board is almost full, there's only one valid number.
-    // Let's iterate 1-9 and see which one is valid.
+    // Check if it's valid in current state definition (it should be if user hasn't messed up)
+    // If user has put wrong numbers elsewhere, this might "break" the puzzle rules visually,
+    // but we trust the authoritative solution.
 
-    for (int val = 1; val <= 9; val++) {
-      if (_grid.isValidMove(r, c, val)) {
-        _grid = _grid.updateCell(r, c, val);
-        break;
-      }
-    }
+    _grid = _grid.updateCell(r, c, correctVal);
 
     _startHintCooldown();
 

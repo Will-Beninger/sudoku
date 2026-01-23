@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/game/screens/game_screen.dart';
+import 'package:sudoku_poc/features/menu/screens/main_menu_screen.dart';
 import 'package:sudoku_poc/features/settings/theme_provider.dart';
 
 void main() {
@@ -36,7 +36,7 @@ class SudokuApp extends StatelessWidget {
               textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
             ),
             themeMode: themeProvider.themeMode,
-            home: const GameScreen(),
+            home: const MainMenuScreen(),
           );
         },
       ),

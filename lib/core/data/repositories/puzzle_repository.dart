@@ -1,0 +1,102 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sudoku_poc/core/data/models/puzzle.dart';
+
+class PuzzleRepository {
+  final SharedPreferences? _prefs;
+
+  PuzzleRepository([this._prefs]);
+
+  static Future<PuzzleRepository> create() async {
+    final prefs = await SharedPreferences.getInstance();
+    return PuzzleRepository(prefs);
+  }
+
+  // In a real app, this might load all JSONs from assets/puzzles/
+  // For PoC, we will simulate loading a "Standard Pack" with hardcoded data + our previous mock.
+  Future<List<PuzzlePack>> loadPacks() async {
+    // Simulate async load
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    return [
+      PuzzlePack(id: 'std_pack', name: 'Standard Collection', puzzles: [
+        // Our original Mock Puzzle (Easy-ish because almost solved)
+        const Puzzle(
+          id: 'mock_001',
+          difficulty: Difficulty.easy,
+          // Original partial board from GameProvider
+          initialBoard:
+              "534678912672195348198342567859761423426853791713924856961537284287419630345286170",
+          solutionBoard:
+              "534678912672195348198342567859761423426853791713924856961537284287419635345286179",
+        ),
+        // A truly empty-ish puzzle for "Medium"
+        const Puzzle(
+            id: 'mock_002',
+            difficulty: Difficulty.medium,
+            initialBoard:
+                "000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            solutionBoard:
+                "534678912672195348198342567859761423426853791713924856961537284287419635345286179"
+            // Cheating with same solution for PoC simplicity
+            ),
+      ])
+    ];
+  }
+
+  Future<Puzzle?> getNextPuzzle(String currentPuzzleId) async {
+    final packs = await loadPacks();
+    final allPuzzles = packs.expand((p) => p.puzzles).toList();
+
+    final currentIndex = allPuzzles.indexWhere((p) => p.id == currentPuzzleId);
+    if (currentIndex != -1 && currentIndex < allPuzzles.length - 1) {
+      final next = allPuzzles[currentIndex + 1];
+      final current = allPuzzles[currentIndex];
+      // Only proceed if same difficulty
+      if (next.difficulty == current.difficulty) {
+        return next;
+      }
+    }
+    return null;
+  }
+
+  // --- Persistence ---
+
+  bool isLevelCompleted(String puzzleId) {
+    final completed = _prefs?.getStringList('completed_levels') ?? [];
+    return completed.contains(puzzleId);
+  }
+
+  Duration? getBestTime(String puzzleId) {
+    final ms = _prefs?.getInt('best_time_$puzzleId');
+    return ms != null ? Duration(milliseconds: ms) : null;
+  }
+
+  Future<void> completeLevel(String puzzleId, Duration timeTaken) async {
+    final completed = _prefs?.getStringList('completed_levels') ?? [];
+    if (!completed.contains(puzzleId)) {
+      completed.add(puzzleId);
+      await _prefs?.setStringList('completed_levels', completed);
+    }
+
+    final currentBest = getBestTime(puzzleId);
+    if (currentBest == null || timeTaken < currentBest) {
+      await _prefs?.setInt('best_time_$puzzleId', timeTaken.inMilliseconds);
+    }
+
+    // Global Stats
+    await _incrementStat('games_won');
+  }
+
+  Future<void> _incrementStat(String key) async {
+    final current = _prefs?.getInt('stat_$key') ?? 0;
+    await _prefs?.setInt('stat_$key', current + 1);
+  }
+
+  Map<String, dynamic> getStats() {
+    return {
+      'games_won': _prefs?.getInt('stat_games_won') ?? 0,
+      'completed_count':
+          (_prefs?.getStringList('completed_levels') ?? []).length,
+    };
+  }
+}
