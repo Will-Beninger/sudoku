@@ -1,0 +1,8 @@
+flutter_native_splash:
+  color: "#121212"
+  image: assets/splash/splash_branding.png
+  android_12:
+    color: "#121212"
+    image: assets/splash/splash_branding.png
+  web: false # Web doesn't support native splash in the same way usually, deferring
+  fullscreen: true
