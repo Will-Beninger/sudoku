@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku_poc/core/data/models/puzzle.dart';
 
@@ -14,33 +17,18 @@ class PuzzleRepository {
   // In a real app, this might load all JSONs from assets/puzzles/
   // For PoC, we will simulate loading a "Standard Pack" with hardcoded data + our previous mock.
   Future<List<PuzzlePack>> loadPacks() async {
-    // Simulate async load
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    return [
-      PuzzlePack(id: 'std_pack', name: 'Standard Collection', puzzles: [
-        // Our original Mock Puzzle (Easy-ish because almost solved)
-        const Puzzle(
-          id: 'mock_001',
-          difficulty: Difficulty.easy,
-          // Original partial board from GameProvider
-          initialBoard:
-              "534678912672195348198342567859761423426853791713924856961537284287419630345286170",
-          solutionBoard:
-              "534678912672195348198342567859761423426853791713924856961537284287419635345286179",
-        ),
-        // A truly empty-ish puzzle for "Medium"
-        const Puzzle(
-            id: 'mock_002',
-            difficulty: Difficulty.medium,
-            initialBoard:
-                "000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            solutionBoard:
-                "534678912672195348198342567859761423426853791713924856961537284287419635345286179"
-            // Cheating with same solution for PoC simplicity
-            ),
-      ])
-    ];
+    try {
+      // In a real app we'd load a manifest or list of files.
+      // For now, we load known packs.
+      final jsonString =
+          await rootBundle.loadString('assets/puzzles/primary_pack.json');
+      final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
+      final pack = PuzzlePack.fromJson(jsonMap);
+      return [pack];
+    } catch (e) {
+      debugPrint('Error loading puzzles: $e');
+      return []; // Return empty on error
+    }
   }
 
   Future<Puzzle?> getNextPuzzle(String currentPuzzleId) async {

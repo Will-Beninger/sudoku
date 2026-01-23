@@ -10,7 +10,7 @@ This project is a modern, responsive Sudoku game designed to run on Windows, mac
 
   - **Cross-Platform**: Runs natively on Windows, macOS, Linux, Android, and Web.
   - **Puzzle Progression**:
-    - Multi-Level packs managed via JSON.
+    - Multi-Level packs managed via JSON. [Read Format Spec](PUZZLE_FORMAT.md)
     - Difficulty selection (Easy, Medium, Hard, Expert).
     - Persistent progress tracking (Completed levels, Best Times).
   - **Responsive UI**:
