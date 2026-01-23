@@ -8,7 +8,7 @@ This project is a modern, responsive Sudoku game designed to run on Windows, mac
 
 ## Features
 
-- **Cross-Platform**: Runs natively on Windows, macOS, Linux, and Web.
+- **Cross-Platform**: Runs natively on Windows, macOS, Linux, Android, and Web.
 - **Responsive UI**:
   - Scales down gracefully on smaller screens using `FittedBox`.
   - Optimized for desktop window resizing.
@@ -47,4 +47,7 @@ flutter run -d windows
 
 # Run on Chrome
 flutter run -d chrome
+
+# Run on Android (requires emulator or device)
+flutter run -d android
 ```

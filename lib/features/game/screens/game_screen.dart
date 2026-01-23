@@ -44,9 +44,9 @@ class _GameScreenState extends State<GameScreen> {
       // Check for numbers 1-9
       int? number;
       if (event.logicalKey == LogicalKeyboardKey.digit1 ||
-          event.logicalKey == LogicalKeyboardKey.numpad1)
+          event.logicalKey == LogicalKeyboardKey.numpad1) {
         number = 1;
-      else if (event.logicalKey == LogicalKeyboardKey.digit2 ||
+      } else if (event.logicalKey == LogicalKeyboardKey.digit2 ||
           event.logicalKey == LogicalKeyboardKey.numpad2)
         number = 2;
       else if (event.logicalKey == LogicalKeyboardKey.digit3 ||
@@ -78,14 +78,18 @@ class _GameScreenState extends State<GameScreen> {
       if (game.selectedRow != null && game.selectedCol != null) {
         int r = game.selectedRow!;
         int c = game.selectedCol!;
-        if (event.logicalKey == LogicalKeyboardKey.arrowUp)
+        if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
           r = (r - 1).clamp(0, 8);
-        if (event.logicalKey == LogicalKeyboardKey.arrowDown)
+        }
+        if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
           r = (r + 1).clamp(0, 8);
-        if (event.logicalKey == LogicalKeyboardKey.arrowLeft)
+        }
+        if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
           c = (c - 1).clamp(0, 8);
-        if (event.logicalKey == LogicalKeyboardKey.arrowRight)
+        }
+        if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
           c = (c + 1).clamp(0, 8);
+        }
         if (r != game.selectedRow || c != game.selectedCol) {
           game.selectCell(r, c);
         }
