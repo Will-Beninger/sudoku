@@ -104,7 +104,7 @@ class _GameScreenState extends State<GameScreen> {
       onKeyEvent: _handleKeyEvent,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Sudoku PoC'),
+          title: const Text('Sudoku: Always Free'),
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),

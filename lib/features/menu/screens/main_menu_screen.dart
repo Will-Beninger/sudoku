@@ -14,7 +14,7 @@ class MainMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sudoku'),
+        title: const Text('Sudoku: Always Free'),
         actions: [
           Consumer<SettingsProvider>(
             builder: (context, settings, child) => IconButton(
@@ -29,9 +29,19 @@ class MainMenuScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                'assets/icon/app_icon.png',
+                width: 100,
+                height: 100,
+              ),
+            ),
+            const SizedBox(height: 24),
             const Text(
-              'Sudoku',
-              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              'Sudoku: Always Free',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 48),
             ElevatedButton(

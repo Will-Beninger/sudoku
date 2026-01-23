@@ -27,5 +27,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/puzzles/
+    - assets/icon/
+    - assets/splash/
 
   uses-material-design: true
