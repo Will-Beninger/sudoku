@@ -11,7 +11,8 @@ This project is a modern, responsive Sudoku game designed to run on Windows, mac
 - **Cross-Platform**: Runs natively on Windows, macOS, Linux, Android, and Web.
 - **Responsive UI**:
   - Scales down gracefully on smaller screens using `FittedBox`.
-  - Optimized for desktop window resizing.
+  - **Adaptive Layout**: Automatically switches between Portrait (stacked) and Landscape (side-by-side) modes based on window aspect ratio and width (>900px).
+  - Optimized for desktop window resizing and tablet/mobile rotation.
 - **Game Mechanics**:
   - **Standard Sudoku Board**: 9x9 grid with standard rules.
   - **Input Methods**:

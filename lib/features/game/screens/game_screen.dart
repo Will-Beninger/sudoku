@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/game/widgets/hint_button_widget.dart';
-import 'package:sudoku_poc/features/game/widgets/number_pad_widget.dart';
+import 'package:sudoku_poc/features/game/widgets/game_controls_widget.dart';
 import 'package:sudoku_poc/features/game/widgets/sudoku_board_widget.dart';
 import 'package:sudoku_poc/features/game/widgets/win_dialog_widget.dart';
 import 'package:sudoku_poc/features/settings/theme_provider.dart';
@@ -139,90 +138,73 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ],
         ),
-        body: Center(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Header: Timer and New Game
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Consumer<GameProvider>(builder: (_, game, __) {
-                          final t = game.elapsedTime;
-                          return Text(
-                            'Time: ${t.inMinutes}:${(t.inSeconds % 60).toString().padLeft(2, '0')}',
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          );
-                        }),
-                        ElevatedButton(
-                          onPressed: () =>
-                              context.read<GameProvider>().restartGame(),
-                          child: const Text('New Game'),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth > 900 &&
+                constraints.maxWidth > constraints.maxHeight;
+
+            if (isWide) {
+              // LANDSCAPE / WIDE LAYOUT
+              return Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Board (Left)
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 600),
+                            child: const SudokuBoardWidget(),
+                          ),
                         ),
+                      ),
+                    ),
+
+                    // Controls (Right)
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 400),
+                            child: const GameControlsWidget(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    _WinReflector(),
+                  ],
+                ),
+              );
+            } else {
+              // PORTRAIT / NARROW LAYOUT (Original)
+              return Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: SudokuBoardWidget(),
+                        ),
+                        const GameControlsWidget(),
+                        _WinReflector(),
                       ],
                     ),
                   ),
-
-                  // Board
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: SudokuBoardWidget(),
-                  ),
-
-                  // Controls
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Consumer<GameProvider>(builder: (_, game, __) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Undo
-                          IconButton(
-                            onPressed: game.canUndo ? () => game.undo() : null,
-                            icon: const Icon(Icons.undo),
-                            tooltip: 'Undo',
-                          ),
-                          const SizedBox(width: 16),
-                          const HintButtonWidget(),
-                          const SizedBox(width: 16),
-                          // Note Toggle
-                          IconButton(
-                            onPressed: () => game.toggleNoteMode(),
-                            icon: Icon(
-                                game.isNoteMode ? Icons.edit : Icons.edit_off),
-                            color: game.isNoteMode
-                                ? Theme.of(context).colorScheme.primary
-                                : null,
-                            tooltip: 'Toggle Note Mode',
-                          ),
-                        ],
-                      );
-                    }),
-                  ),
-
-                  // Number Pad
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: NumberPadWidget(
-                      onNumberSelected: (number) {
-                        context.read<GameProvider>().inputNumber(number);
-                      },
-                    ),
-                  ),
-
-                  // Listener for Win Dialog
-                  _WinReflector(),
-                ],
-              ),
-            ),
-          ),
+                ),
+              );
+            }
+          },
         ),
       ),
     );
