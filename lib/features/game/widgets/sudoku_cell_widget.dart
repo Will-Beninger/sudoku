@@ -65,12 +65,14 @@ class SudokuCellWidget extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     if (cell.value != null) {
       return Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(1.0),
         child: FittedBox(
           fit: BoxFit.contain,
           child: Text(
             cell.value!.toString(),
             style: TextStyle(
+              fontSize: 32,
+              height: 1.0,
               fontWeight: cell.isFixed ? FontWeight.w900 : FontWeight.w600,
               color: cell.isFixed
                   ? Theme.of(context).colorScheme.onSurface
