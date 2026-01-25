@@ -44,14 +44,14 @@ class NumberPadWidget extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(2.0),
                   child: FittedBox(
                     fit: BoxFit.contain,
                     child: Text(
                       number.toString(),
                       style: TextStyle(
-                        fontSize: 32, // Base size, will scale down/up
-                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w900,
                         decoration:
                             isCompleted ? TextDecoration.lineThrough : null,
                       ),

@@ -64,14 +64,19 @@ class SudokuCellWidget extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     if (cell.value != null) {
-      return Text(
-        cell.value!.toString(),
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: cell.isFixed ? FontWeight.bold : FontWeight.normal,
-          color: cell.isFixed
-              ? Theme.of(context).colorScheme.onSurface
-              : Theme.of(context).colorScheme.primary,
+      return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Text(
+            cell.value!.toString(),
+            style: TextStyle(
+              fontWeight: cell.isFixed ? FontWeight.w900 : FontWeight.w600,
+              color: cell.isFixed
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ),
       );
     } else if (cell.notes.isNotEmpty) {
