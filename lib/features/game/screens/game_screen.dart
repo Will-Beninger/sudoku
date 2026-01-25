@@ -210,11 +210,24 @@ class _GameScreenState extends State<GameScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: SudokuBoardWidget(),
+                        Expanded(
+                          flex: 2,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SudokuBoardWidget(),
+                            ),
+                          ),
                         ),
-                        const GameControlsWidget(),
+                        Expanded(
+                          flex: 1,
+                          child: Center(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 500),
+                              child: const GameControlsWidget(),
+                            ),
+                          ),
+                        ),
                         _WinReflector(),
                       ],
                     ),
