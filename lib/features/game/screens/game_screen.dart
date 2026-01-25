@@ -203,35 +203,35 @@ class _GameScreenState extends State<GameScreen> {
             } else {
               // PORTRAIT / NARROW LAYOUT (Original)
               return Center(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 600),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: SudokuBoardWidget(),
-                            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: const SudokuBoardWidget(),
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 500),
-                              child: const GameControlsWidget(),
-                            ),
-                          ),
-                        ),
-                        _WinReflector(),
-                      ],
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 500),
+                            child: const GameControlsWidget(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    _WinReflector(),
+                  ],
                 ),
               );
             }
