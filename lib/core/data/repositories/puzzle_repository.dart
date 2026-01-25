@@ -18,16 +18,34 @@ class PuzzleRepository {
   // For PoC, we will simulate loading a "Standard Pack" with hardcoded data + our previous mock.
   Future<List<PuzzlePack>> loadPacks() async {
     try {
-      // In a real app we'd load a manifest or list of files.
-      // For now, we load known packs.
-      final jsonString =
-          await rootBundle.loadString('assets/puzzles/primary_pack.json');
-      final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
-      final pack = PuzzlePack.fromJson(jsonMap);
-      return [pack];
+      final manifestContent = await rootBundle.loadString('AssetManifest.json');
+      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+
+      final puzzlePaths = manifestMap.keys
+          .where((String key) =>
+              key.startsWith('assets/puzzles/') && key.endsWith('.json'))
+          .toList();
+
+      final List<PuzzlePack> packs = [];
+
+      for (final path in puzzlePaths) {
+        try {
+          final jsonString = await rootBundle.loadString(path);
+          final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
+          final pack = PuzzlePack.fromJson(jsonMap);
+          packs.add(pack);
+        } catch (e) {
+          debugPrint('Error loading puzzle pack at $path: $e');
+          // Continue loading other packs even if one fails
+        }
+      }
+
+      // Sort packs if needed, or return as is.
+      // For now, we return all found packs.
+      return packs;
     } catch (e) {
-      debugPrint('Error loading puzzles: $e');
-      return []; // Return empty on error
+      debugPrint('Error discovery puzzles: $e');
+      return [];
     }
   }
 
