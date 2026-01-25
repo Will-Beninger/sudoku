@@ -225,9 +225,8 @@ class _GameScreenState extends State<GameScreen> {
                           padding: const EdgeInsets.all(16.0),
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: SizedBox(
-                              width: 640,
-                              height: 640,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 800),
                               child: const SudokuBoardWidget(),
                             ),
                           ),
