@@ -18,10 +18,9 @@ class PuzzleRepository {
   // For PoC, we will simulate loading a "Standard Pack" with hardcoded data + our previous mock.
   Future<List<PuzzlePack>> loadPacks() async {
     try {
-      final manifestContent = await rootBundle.loadString('AssetManifest.json');
-      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-
-      final puzzlePaths = manifestMap.keys
+      final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+      final puzzlePaths = manifest
+          .listAssets()
           .where((String key) =>
               key.startsWith('assets/puzzles/') && key.endsWith('.json'))
           .toList();
@@ -40,8 +39,6 @@ class PuzzleRepository {
         }
       }
 
-      // Sort packs if needed, or return as is.
-      // For now, we return all found packs.
       return packs;
     } catch (e) {
       debugPrint('Error discovery puzzles: $e');

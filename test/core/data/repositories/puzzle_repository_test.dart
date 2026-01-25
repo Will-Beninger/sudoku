@@ -35,7 +35,11 @@ void main() {
           .setMockMessageHandler('flutter/assets', (ByteData? message) async {
         final String key = utf8.decode(message!.buffer.asUint8List());
 
-        if (key == 'AssetManifest.json') {
+        if (key == 'AssetManifest.bin') {
+          final ByteData? data =
+              const StandardMessageCodec().encodeMessage(manifest);
+          return data;
+        } else if (key == 'AssetManifest.json') {
           return ByteData.view(
               Uint8List.fromList(utf8.encode(jsonEncode(manifest))).buffer);
         } else if (key == 'assets/puzzles/pack1.json') {
