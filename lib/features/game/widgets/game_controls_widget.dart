@@ -12,122 +12,168 @@ class GameControlsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Header: Timer and New Game
+        // Header: Timer (Centered)
         Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Consumer<GameProvider>(builder: (_, game, __) {
-                final t = game.elapsedTime;
-                return Text(
-                  'Time: ${t.inMinutes}:${(t.inSeconds % 60).toString().padLeft(2, '0')}',
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold),
-                );
-              }),
-              ElevatedButton(
-                onPressed: () => context.read<GameProvider>().restartGame(),
-                child: const Text('New Game'),
-              ),
-            ],
-          ),
-        ),
-
-        // Controls
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.only(bottom: 16.0),
           child: Consumer<GameProvider>(builder: (_, game, __) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Undo
-                IconButton(
-                  onPressed: game.canUndo ? () => game.undo() : null,
-                  icon: const Icon(Icons.undo),
-                  tooltip: 'Undo',
-                ),
-                const SizedBox(width: 8),
-                // Clear Cell
-                IconButton(
-                  onPressed: () => game.clearCell(),
-                  icon: const Icon(Icons.delete_outline),
-                  tooltip: 'Clear Cell',
-                ),
-                const SizedBox(width: 8),
-                // Hint
-                const HintButtonWidget(),
-                const SizedBox(width: 8),
-                // Note Toggle
-                IconButton(
-                  onPressed: () => game.toggleNoteMode(),
-                  icon: Icon(game.isNoteMode ? Icons.edit : Icons.edit_off),
-                  color: game.isNoteMode
-                      ? Theme.of(context).colorScheme.primary
-                      : null,
-                  tooltip: 'Toggle Note Mode',
-                ),
-                const SizedBox(width: 8),
-                // Conflict Check
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: game.isConflictCheckActive
-                            ? null
-                            : () => game.checkConflicts(),
-                        icon: const Icon(Icons.spellcheck),
-                        tooltip: 'Check Logic'),
-                    if (game.isConflictCheckActive)
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            '${game.conflictCooldown}',
-                            style: const TextStyle(
-                                fontSize: 10, color: Colors.white),
-                          ),
-                        ),
-                      )
-                  ],
-                ),
-              ],
+            final t = game.elapsedTime;
+            return Text(
+              '${t.inMinutes}:${(t.inSeconds % 60).toString().padLeft(2, '0')}',
+              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             );
           }),
         ),
 
-        const SizedBox(height: 16),
-
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: NumberPadWidget(
-            onNumberSelected: (number) {
-              context.read<GameProvider>().inputNumber(number);
+        // Feedback Message (Reserved Space to prevent jump)
+        SizedBox(
+          height: 24,
+          child: Consumer<GameProvider>(
+            builder: (_, game, __) {
+              if (game.feedbackMessage == null) return const SizedBox.shrink();
+              return Center(
+                child: Text(
+                  game.feedbackMessage!,
+                  style: const TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+              );
             },
           ),
         ),
+        const SizedBox(height: 8),
 
-        // Feedback Message
-        Consumer<GameProvider>(
-          builder: (_, game, __) {
-            if (game.feedbackMessage == null) return const SizedBox.shrink();
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Text(
-                game.feedbackMessage!,
-                style: const TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
+        // Main Controls Layout: Left Col | NumberPad | Right Col
+        Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 0.0), // Reduced padding
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // LEFT CONTROLS
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildSideButton(
+                    context,
+                    icon: Icons.undo,
+                    label: 'Undo',
+                    onPressed: context.select((GameProvider g) => g.canUndo)
+                        ? () => context.read<GameProvider>().undo()
+                        : null,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildSideButton(
+                    context,
+                    icon: Icons.delete_outline,
+                    label: 'Clear',
+                    onPressed: () => context.read<GameProvider>().clearCell(),
+                  ),
+                ],
               ),
-            );
-          },
+
+              const SizedBox(width: 16),
+
+              // CENTER NUMBER PAD
+              Expanded(
+                child: NumberPadWidget(
+                  onNumberSelected: (number) {
+                    context.read<GameProvider>().inputNumber(number);
+                  },
+                ),
+              ),
+
+              const SizedBox(width: 16),
+
+              // RIGHT CONTROLS
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Hint is complex, needs own widget wrapper usually, but let's try to fit it
+                  // For now, simpler to keep using HintButtonWidget but maybe wrap it?
+                  // Actually HintButtonWidget returns an IconButton/ElevatedButton.
+                  // Let's create a wrapper or just put it here.
+                  const HintButtonWidget(),
+                  const SizedBox(height: 16),
+                  Consumer<GameProvider>(
+                    builder: (_, game, __) => _buildSideButton(
+                      context,
+                      icon: game.isNoteMode ? Icons.edit : Icons.edit_off,
+                      label: 'Note',
+                      isActive: game.isNoteMode,
+                      onPressed: () => game.toggleNoteMode(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Consumer<GameProvider>(
+                    builder: (_, game, __) => Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        _buildSideButton(
+                          context,
+                          icon: Icons.spellcheck,
+                          label: 'Check',
+                          onPressed: game.isConflictCheckActive
+                              ? null
+                              : () => game.checkConflicts(),
+                        ),
+                        if (game.isConflictCheckActive)
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                '${game.conflictCooldown}',
+                                style: const TextStyle(
+                                    fontSize: 10, color: Colors.white),
+                              ),
+                            ),
+                          )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSideButton(BuildContext context,
+      {required IconData icon,
+      required String label,
+      VoidCallback? onPressed,
+      bool isActive = false}) {
+    final theme = Theme.of(context);
+    final color = isActive ? theme.colorScheme.primary : theme.iconTheme.color;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton.filledTonal(
+          onPressed: onPressed,
+          icon: Icon(icon, color: onPressed == null ? null : color),
+          style: isActive
+              ? IconButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primaryContainer)
+              : null,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: onPressed == null ? theme.disabledColor : color,
+          ),
         ),
       ],
     );

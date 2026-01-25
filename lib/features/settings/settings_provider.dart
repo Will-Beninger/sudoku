@@ -5,7 +5,7 @@ class SettingsProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   bool _highlightRowCol = false;
   bool _highlightSameNumber = false;
-  bool _greyOutCompletedNumbers = true;
+  bool _greyOutCompletedNumbers = false;
   late SharedPreferences _prefs;
 
   ThemeMode get themeMode => _themeMode;
@@ -27,7 +27,7 @@ class SettingsProvider extends ChangeNotifier {
 
     _highlightRowCol = _prefs.getBool('highlight_row_col') ?? false;
     _highlightSameNumber = _prefs.getBool('highlight_same_number') ?? false;
-    _greyOutCompletedNumbers = _prefs.getBool('grey_out_completed') ?? true;
+    _greyOutCompletedNumbers = _prefs.getBool('grey_out_completed') ?? false;
 
     notifyListeners();
   }

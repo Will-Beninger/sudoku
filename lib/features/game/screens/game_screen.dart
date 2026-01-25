@@ -107,6 +107,33 @@ class _GameScreenState extends State<GameScreen> {
           title: const Text('Sudoku: Always Free'),
           actions: [
             IconButton(
+              icon: const Icon(Icons.refresh),
+              tooltip: 'Restart Level',
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Restart Level?'),
+                    content: const Text(
+                        'Are you sure you want to restart this puzzle? All progress will be lost.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.read<GameProvider>().restartGame();
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Restart'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
                 showDialog(

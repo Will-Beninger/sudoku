@@ -67,7 +67,7 @@ class SudokuCellWidget extends StatelessWidget {
       return Text(
         cell.value!.toString(),
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 24,
           fontWeight: cell.isFixed ? FontWeight.bold : FontWeight.normal,
           color: cell.isFixed
               ? Theme.of(context).colorScheme.onSurface
