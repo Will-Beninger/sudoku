@@ -9,14 +9,25 @@ class HintButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final game = context.watch<GameProvider>();
     final isCooldown = game.isHintActive;
+    final theme = Theme.of(context);
 
-    return ElevatedButton.icon(
-      onPressed: isCooldown ? null : () => game.useHint(),
-      icon: const Icon(Icons.lightbulb),
-      label: Text(isCooldown ? 'Hint (${game.hintCooldown}s)' : 'Hint'),
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton.filledTonal(
+          onPressed: isCooldown ? null : () => game.useHint(),
+          icon: const Icon(Icons.lightbulb),
+          iconSize: 32,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          isCooldown ? '${game.hintCooldown}s' : 'Hint',
+          style: TextStyle(
+            fontSize: 14,
+            color: isCooldown ? theme.disabledColor : theme.iconTheme.color,
+          ),
+        ),
+      ],
     );
   }
 }

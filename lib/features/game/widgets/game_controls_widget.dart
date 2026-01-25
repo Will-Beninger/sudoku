@@ -162,6 +162,7 @@ class GameControlsWidget extends StatelessWidget {
         IconButton.filledTonal(
           onPressed: onPressed,
           icon: Icon(icon, color: onPressed == null ? null : color),
+          iconSize: 32, // Larger icons
           style: isActive
               ? IconButton.styleFrom(
                   backgroundColor: theme.colorScheme.primaryContainer)
@@ -171,7 +172,7 @@ class GameControlsWidget extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 14, // Larger text
             color: onPressed == null ? theme.disabledColor : color,
           ),
         ),

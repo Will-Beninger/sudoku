@@ -43,15 +43,18 @@ class NumberPadWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Opacity(
-                  opacity: isCompleted ? 0.2 : 1.0,
-                  child: Text(
-                    number.toString(),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      decoration:
-                          isCompleted ? TextDecoration.lineThrough : null,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text(
+                      number.toString(),
+                      style: TextStyle(
+                        fontSize: 32, // Base size, will scale down/up
+                        fontWeight: FontWeight.bold,
+                        decoration:
+                            isCompleted ? TextDecoration.lineThrough : null,
+                      ),
                     ),
                   ),
                 ),
