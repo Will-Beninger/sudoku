@@ -51,6 +51,7 @@ class NumberPadWidget extends StatelessWidget {
                       number.toString(),
                       style: TextStyle(
                         fontSize: 32,
+                        height: 1.0,
                         fontWeight: FontWeight.w900,
                         decoration:
                             isCompleted ? TextDecoration.lineThrough : null,
