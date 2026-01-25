@@ -26,72 +26,75 @@ class MainMenuScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                'assets/icon/app_icon.png',
-                width: 100,
-                height: 100,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/icon/app_icon.png',
+                  width: 100,
+                  height: 100,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Sudoku: Always Free',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 48),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const LevelSelectScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+              const SizedBox(height: 24),
+              const Text(
+                'Sudoku: Always Free',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
-              child: const Text('Play Game', style: TextStyle(fontSize: 24)),
-            ),
-            const SizedBox(height: 16),
-            OutlinedButton(
-              onPressed: () {
-                // TODO: Stats Screen
-                _showStatsDialog(context);
-              },
-              child: const Text('Statistics'),
-            ),
-            const SizedBox(height: 16),
-            OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const OptionsScreen()),
-                );
-              },
-              child: const Text('Options'),
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: () {
-                if (converted.Platform.isWindows ||
-                    converted.Platform.isLinux ||
-                    converted.Platform.isMacOS) {
-                  converted.exit(0);
-                } else {
-                  SystemNavigator.pop();
-                }
-              },
-              child:
-                  const Text('Exit Game', style: TextStyle(color: Colors.red)),
-            ),
-          ],
+              const SizedBox(height: 48),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LevelSelectScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                ),
+                child: const Text('Play Game', style: TextStyle(fontSize: 24)),
+              ),
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () {
+                  // TODO: Stats Screen
+                  _showStatsDialog(context);
+                },
+                child: const Text('Statistics'),
+              ),
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OptionsScreen()),
+                  );
+                },
+                child: const Text('Options'),
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  if (converted.Platform.isWindows ||
+                      converted.Platform.isLinux ||
+                      converted.Platform.isMacOS) {
+                    converted.exit(0);
+                  } else {
+                    SystemNavigator.pop();
+                  }
+                },
+                child: const Text('Exit Game',
+                    style: TextStyle(color: Colors.red)),
+              ),
+              const SizedBox(height: 16), // Bottom padding for scroll
+            ],
+          ),
         ),
       ),
     );

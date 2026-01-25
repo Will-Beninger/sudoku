@@ -33,27 +33,35 @@ class NumberPadWidget extends StatelessWidget {
               final number = index + 1;
               final isCompleted = completedNumbers.contains(number);
 
-              return FilledButton.tonal(
-                onPressed: isCompleted ? null : () => onNumberSelected(number),
-                style: FilledButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  // Explicitly grey out background if completed
-                  backgroundColor: isCompleted ? Colors.black12 : null,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+              return Material(
+                color: isCompleted
+                    ? Colors.black12
+                    : Theme.of(context).colorScheme.secondaryContainer,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Text(
-                      number.toString(),
-                      style: TextStyle(
-                        fontSize: 32, // Base size, will scale down/up
-                        fontWeight: FontWeight.bold,
-                        decoration:
-                            isCompleted ? TextDecoration.lineThrough : null,
+                child: InkWell(
+                  onTap: isCompleted ? null : () => onNumberSelected(number),
+                  borderRadius: BorderRadius.circular(8),
+                  child: FractionallySizedBox(
+                    widthFactor: 0.75,
+                    heightFactor: 0.75,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        number.toString(),
+                        style: TextStyle(
+                          fontSize: 96,
+                          height: 1.0,
+                          fontWeight: FontWeight.w900,
+                          color: isCompleted
+                              ? Theme.of(context).disabledColor
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                          decoration:
+                              isCompleted ? TextDecoration.lineThrough : null,
+                        ),
                       ),
                     ),
                   ),

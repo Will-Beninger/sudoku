@@ -50,8 +50,14 @@ class Puzzle {
   }
 
   static Difficulty _parseDifficulty(String s) {
+    final lower = s.toLowerCase();
+    if (lower.contains('expert')) return Difficulty.expert;
+    if (lower.contains('hard')) return Difficulty.hard;
+    if (lower.contains('medium')) return Difficulty.medium;
+    if (lower.contains('easy')) return Difficulty.easy;
+
     return Difficulty.values.firstWhere(
-      (e) => e.name == s.toLowerCase(),
+      (e) => e.name == lower,
       orElse: () => Difficulty.easy,
     );
   }
