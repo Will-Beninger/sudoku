@@ -201,7 +201,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
               );
             } else {
-              // PORTRAIT / NARROW LAYOUT (Original)
+              // PORTRAIT / NARROW LAYOUT
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -213,7 +213,11 @@ class _GameScreenState extends State<GameScreen> {
                           padding: const EdgeInsets.all(16.0),
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: const SudokuBoardWidget(),
+                            child: SizedBox(
+                              width: 640,
+                              height: 640,
+                              child: const SudokuBoardWidget(),
+                            ),
                           ),
                         ),
                       ),
@@ -223,8 +227,8 @@ class _GameScreenState extends State<GameScreen> {
                       child: Center(
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 500),
+                          child: SizedBox(
+                            width: 500,
                             child: const GameControlsWidget(),
                           ),
                         ),
