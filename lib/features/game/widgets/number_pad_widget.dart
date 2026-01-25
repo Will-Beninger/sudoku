@@ -45,23 +45,21 @@ class NumberPadWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   child: Padding(
                     padding: const EdgeInsets.all(2.0),
-                    child: Center(
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(
-                          number.toString(),
-                          style: TextStyle(
-                            fontSize: 32,
-                            height: 1.0,
-                            fontWeight: FontWeight.w900,
-                            color: isCompleted
-                                ? Theme.of(context).disabledColor
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                            decoration:
-                                isCompleted ? TextDecoration.lineThrough : null,
-                          ),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        number.toString(),
+                        style: TextStyle(
+                          fontSize: 96,
+                          height: 1.0,
+                          fontWeight: FontWeight.w900,
+                          color: isCompleted
+                              ? Theme.of(context).disabledColor
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                          decoration:
+                              isCompleted ? TextDecoration.lineThrough : null,
                         ),
                       ),
                     ),
