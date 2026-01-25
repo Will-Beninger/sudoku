@@ -233,14 +233,14 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       flex: 1,
                       child: Center(
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: SizedBox(
                             width: 500,
-                            child: const GameControlsWidget(),
+                            child: GameControlsWidget(),
                           ),
                         ),
                       ),
