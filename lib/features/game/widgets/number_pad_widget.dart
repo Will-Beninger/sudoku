@@ -43,8 +43,9 @@ class NumberPadWidget extends StatelessWidget {
                 child: InkWell(
                   onTap: isCompleted ? null : () => onNumberSelected(number),
                   borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
+                  child: FractionallySizedBox(
+                    widthFactor: 0.75,
+                    heightFactor: 0.75,
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(

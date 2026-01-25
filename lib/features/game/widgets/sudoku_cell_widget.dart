@@ -64,8 +64,9 @@ class SudokuCellWidget extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     if (cell.value != null) {
-      return Padding(
-        padding: const EdgeInsets.all(1.0),
+      return FractionallySizedBox(
+        widthFactor: 0.75,
+        heightFactor: 0.75,
         child: FittedBox(
           fit: BoxFit.contain,
           child: Text(
