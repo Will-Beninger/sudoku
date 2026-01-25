@@ -113,23 +113,34 @@ class _GameScreenState extends State<GameScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    scrollable: true,
                     title: const Text('Restart Level?'),
-                    content: const Text(
-                        'Are you sure you want to restart this puzzle? All progress will be lost.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancel'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                              'Are you sure you want to restart this puzzle? All progress will be lost.'),
+                          const SizedBox(height: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Cancel'),
+                              ),
+                              const SizedBox(width: 8),
+                              TextButton(
+                                onPressed: () {
+                                  context.read<GameProvider>().restartGame();
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Restart'),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          context.read<GameProvider>().restartGame();
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Restart'),
-                      ),
-                    ],
+                    ),
                   ),
                 );
               },
