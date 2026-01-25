@@ -15,6 +15,7 @@ class WinDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       title: const Text('You Win!'),
       content: Column(
         mainAxisSize: MainAxisSize.min,

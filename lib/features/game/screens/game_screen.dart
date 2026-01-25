@@ -113,6 +113,7 @@ class _GameScreenState extends State<GameScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
+                    scrollable: true,
                     title: const Text('Restart Level?'),
                     content: const Text(
                         'Are you sure you want to restart this puzzle? All progress will be lost.'),
