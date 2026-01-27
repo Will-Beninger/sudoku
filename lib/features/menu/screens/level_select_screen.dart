@@ -121,11 +121,10 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                               isCompleted ? Colors.green : Colors.grey,
                           child: isCompleted
                               ? const Icon(Icons.check, color: Colors.white)
-                              : Text(puzzle.id.contains('-')
-                                  ? puzzle.id.split('-').last
-                                  : puzzle.id.substring(puzzle.id.length > 2
-                                      ? puzzle.id.length - 2
-                                      : 0)),
+                              : Text(puzzle.id.contains('_')
+                                  ? int.parse(puzzle.id.split('_').last)
+                                      .toString()
+                                  : puzzle.id),
                         ),
                         title: Text('Puzzle ${puzzle.id}'),
                         subtitle: bestTime != null

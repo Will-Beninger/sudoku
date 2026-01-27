@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:sudoku_poc/features/game/game_provider.dart';
 
 class HintButtonWidget extends StatelessWidget {
-  const HintButtonWidget({super.key});
+  final bool useLargeControls;
+
+  const HintButtonWidget({super.key, this.useLargeControls = false});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +19,13 @@ class HintButtonWidget extends StatelessWidget {
         IconButton.filledTonal(
           onPressed: isCooldown ? null : () => game.useHint(),
           icon: const Icon(Icons.lightbulb),
-          iconSize: 32,
+          iconSize: useLargeControls ? 56 : 32,
         ),
         const SizedBox(height: 4),
         Text(
           isCooldown ? '${game.hintCooldown}s' : 'Hint',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: useLargeControls ? 16 : 14,
             color: isCooldown ? theme.disabledColor : theme.iconTheme.color,
           ),
         ),

@@ -5,7 +5,9 @@ import 'package:sudoku_poc/features/game/widgets/hint_button_widget.dart';
 import 'package:sudoku_poc/features/game/widgets/number_pad_widget.dart';
 
 class GameControlsWidget extends StatelessWidget {
-  const GameControlsWidget({super.key});
+  final bool useLargeControls;
+
+  const GameControlsWidget({super.key, this.useLargeControls = false});
 
   @override
   Widget build(BuildContext context) {
@@ -53,31 +55,35 @@ class GameControlsWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // LEFT CONTROLS
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildSideButton(
-                    context,
-                    icon: Icons.undo,
-                    label: 'Undo',
-                    onPressed: context.select((GameProvider g) => g.canUndo)
-                        ? () => context.read<GameProvider>().undo()
-                        : null,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildSideButton(
-                    context,
-                    icon: Icons.delete_outline,
-                    label: 'Clear',
-                    onPressed: () => context.read<GameProvider>().clearCell(),
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildSideButton(
+                      context,
+                      icon: Icons.undo,
+                      label: 'Undo',
+                      onPressed: context.select((GameProvider g) => g.canUndo)
+                          ? () => context.read<GameProvider>().undo()
+                          : null,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildSideButton(
+                      context,
+                      icon: Icons.delete_outline,
+                      label: 'Clear',
+                      onPressed: () => context.read<GameProvider>().clearCell(),
+                    ),
+                  ],
+                ),
               ),
 
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
 
               // CENTER NUMBER PAD
               Expanded(
+                flex: 3,
                 child: NumberPadWidget(
                   onNumberSelected: (number) {
                     context.read<GameProvider>().inputNumber(number);
@@ -85,61 +91,60 @@ class GameControlsWidget extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
 
               // RIGHT CONTROLS
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Hint is complex, needs own widget wrapper usually, but let's try to fit it
-                  // For now, simpler to keep using HintButtonWidget but maybe wrap it?
-                  // Actually HintButtonWidget returns an IconButton/ElevatedButton.
-                  // Let's create a wrapper or just put it here.
-                  const HintButtonWidget(),
-                  const SizedBox(height: 16),
-                  Consumer<GameProvider>(
-                    builder: (_, game, __) => _buildSideButton(
-                      context,
-                      icon: game.isNoteMode ? Icons.edit : Icons.edit_off,
-                      label: 'Note',
-                      isActive: game.isNoteMode,
-                      onPressed: () => game.toggleNoteMode(),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    HintButtonWidget(useLargeControls: useLargeControls),
+                    const SizedBox(height: 16),
+                    Consumer<GameProvider>(
+                      builder: (_, game, __) => _buildSideButton(
+                        context,
+                        icon: game.isNoteMode ? Icons.edit : Icons.edit_off,
+                        label: 'Note',
+                        isActive: game.isNoteMode,
+                        onPressed: () => game.toggleNoteMode(),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Consumer<GameProvider>(
-                    builder: (_, game, __) => Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        _buildSideButton(
-                          context,
-                          icon: Icons.spellcheck,
-                          label: 'Check',
-                          onPressed: game.isConflictCheckActive
-                              ? null
-                              : () => game.checkConflicts(),
-                        ),
-                        if (game.isConflictCheckActive)
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
+                    const SizedBox(height: 16),
+                    Consumer<GameProvider>(
+                      builder: (_, game, __) => Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          _buildSideButton(
+                            context,
+                            icon: Icons.spellcheck,
+                            label: 'Check',
+                            onPressed: game.isConflictCheckActive
+                                ? null
+                                : () => game.checkConflicts(),
+                          ),
+                          if (game.isConflictCheckActive)
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  '${game.conflictCooldown}',
+                                  style: const TextStyle(
+                                      fontSize: 10, color: Colors.white),
+                                ),
                               ),
-                              child: Text(
-                                '${game.conflictCooldown}',
-                                style: const TextStyle(
-                                    fontSize: 10, color: Colors.white),
-                              ),
-                            ),
-                          )
-                      ],
+                            )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -162,7 +167,7 @@ class GameControlsWidget extends StatelessWidget {
         IconButton.filledTonal(
           onPressed: onPressed,
           icon: Icon(icon, color: onPressed == null ? null : color),
-          iconSize: 32, // Larger icons
+          iconSize: useLargeControls ? 56 : 32, // Adaptive size
           style: isActive
               ? IconButton.styleFrom(
                   backgroundColor: theme.colorScheme.primaryContainer)
@@ -172,7 +177,7 @@ class GameControlsWidget extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 14, // Larger text
+            fontSize: useLargeControls ? 16 : 14, // Adaptive size
             color: onPressed == null ? theme.disabledColor : color,
           ),
         ),

@@ -1,0 +1,34 @@
+00:00 +0: loading C:/Users/Will/Downloads/sudoku/test/core/data/models/json_test.dart
+00:00 +0: C:/Users/Will/Downloads/sudoku/test/core/data/models/json_test.dart: JSON Parsing PuzzlePack.fromJson parses valid JSON
+00:00 +1: C:/Users/Will/Downloads/sudoku/test/core/data/repositories/puzzle_repository_test.dart: PuzzleRepository loadPacks discovers and loads puzzles from AssetManifest
+Error loading puzzle pack at assets/puzzles/easy_pack.json: Unable to load asset: "assets/puzzles/easy_pack.json".
+The asset does not exist or has empty data.
+Error loading puzzle pack at assets/puzzles/medium_pack.json: Unable to load asset: "assets/puzzles/medium_pack.json".
+The asset does not exist or has empty data.
+Error loading puzzle pack at assets/puzzles/hard_pack.json: Unable to load asset: "assets/puzzles/hard_pack.json".
+The asset does not exist or has empty data.
+00:00 +1 -1: C:/Users/Will/Downloads/sudoku/test/core/sudoku/cell_test.dart: SudokuCell supports value equality
+00:00 +1 -1: C:/Users/Will/Downloads/sudoku/test/core/data/repositories/puzzle_repository_test.dart: PuzzleRepository loadPacks discovers and loads puzzles from AssetManifest [E]
+  Expected: <2>
+    Actual: <0>
+  
+  package:matcher                                               expect
+  package:flutter_test/src/widget_tester.dart 473:18            expect
+  test\core\data\repositories\puzzle_repository_test.dart 58:7  main.<fn>.<fn>
+  
+00:00 +2 -1: C:/Users/Will/Downloads/sudoku/test/core/sudoku/cell_test.dart: SudokuCell copyWith updates properties
+00:00 +3 -1: C:/Users/Will/Downloads/sudoku/test/core/sudoku/grid_test.dart: SudokuGrid isValidMove detects row conflicts
+00:00 +4 -1: C:/Users/Will/Downloads/sudoku/test/core/sudoku/grid_test.dart: SudokuGrid isValidMove detects column conflicts
+00:00 +5 -1: C:/Users/Will/Downloads/sudoku/test/core/sudoku/grid_test.dart: SudokuGrid isValidMove detects box conflicts
+00:00 +6 -1: C:/Users/Will/Downloads/sudoku/test/core/sudoku/grid_test.dart: SudokuGrid isComplete returns true for solved board
+00:01 +7 -1: C:/Users/Will/Downloads/sudoku/test/features/game/clear_cell_test.dart: GameProvider Clear Logic clearCell should remove both value and notes
+00:01 +8 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Toggle Note Mode
+00:01 +9 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Undo System
+00:01 +10 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Undo System
+00:01 +11 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Undo System
+00:02 +12 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Undo System
+00:02 +13 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Note Mode Input
+00:02 +14 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Note Mode Input
+00:02 +15 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Note Mode Input
+00:02 +16 -1: C:/Users/Will/Downloads/sudoku/test/features/game/feature_test.dart: GameProvider Features Note Mode Input
+00:02 +17 -1: Some tests failed.

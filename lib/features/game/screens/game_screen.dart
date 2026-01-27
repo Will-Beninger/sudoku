@@ -219,7 +219,7 @@ class _GameScreenState extends State<GameScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 5,
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -233,14 +233,18 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                     ),
-                    const Expanded(
-                      flex: 1,
+                    Expanded(
+                      flex: 2,
                       child: Center(
                         child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: SizedBox(
-                            width: 500,
-                            child: GameControlsWidget(),
+                          fit: BoxFit.contain,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 600),
+                            child: const SizedBox(
+                                width: double.infinity,
+                                child: GameControlsWidget(
+                                  useLargeControls: true,
+                                )),
                           ),
                         ),
                       ),

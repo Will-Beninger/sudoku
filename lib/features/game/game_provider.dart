@@ -164,7 +164,10 @@ class GameProvider extends ChangeNotifier {
     _recordHistory();
     _conflictingCells.clear(); // Clear old conflicts
     _feedbackMessage = null;
+    // Clear value
     _grid = _grid.updateCell(_selectedRow!, _selectedCol!, null);
+    // Also clear notes
+    _grid = _grid.updateCellNotes(_selectedRow!, _selectedCol!, {});
     notifyListeners();
   }
 

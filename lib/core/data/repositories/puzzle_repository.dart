@@ -18,12 +18,12 @@ class PuzzleRepository {
   // For PoC, we will simulate loading a "Standard Pack" with hardcoded data + our previous mock.
   Future<List<PuzzlePack>> loadPacks() async {
     try {
-      final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
-      final puzzlePaths = manifest
-          .listAssets()
-          .where((String key) =>
-              key.startsWith('assets/puzzles/') && key.endsWith('.json'))
-          .toList();
+      // Hardcoded list of packs to ensure offline availability without relying on Manifest interaction which can be flaky
+      final puzzlePaths = [
+        'assets/puzzles/easy_pack.json',
+        'assets/puzzles/medium_pack.json',
+        'assets/puzzles/hard_pack.json',
+      ];
 
       final List<PuzzlePack> packs = [];
 
@@ -35,7 +35,6 @@ class PuzzleRepository {
           packs.add(pack);
         } catch (e) {
           debugPrint('Error loading puzzle pack at $path: $e');
-          // Continue loading other packs even if one fails
         }
       }
 

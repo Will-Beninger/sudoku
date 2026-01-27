@@ -44,8 +44,8 @@ class NumberPadWidget extends StatelessWidget {
                   onTap: isCompleted ? null : () => onNumberSelected(number),
                   borderRadius: BorderRadius.circular(8),
                   child: FractionallySizedBox(
-                    widthFactor: 0.75,
-                    heightFactor: 0.75,
+                    widthFactor: 0.9,
+                    heightFactor: 0.9,
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(

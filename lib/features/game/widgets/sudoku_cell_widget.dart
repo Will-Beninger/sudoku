@@ -84,13 +84,13 @@ class SudokuCellWidget extends StatelessWidget {
       );
     } else if (cell.notes.isNotEmpty) {
       return Padding(
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(0.0),
         child: GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            crossAxisSpacing: 1,
-            mainAxisSpacing: 1,
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 0,
           ),
           itemCount: 9,
           itemBuilder: (context, index) {
@@ -101,7 +101,10 @@ class SudokuCellWidget extends StatelessWidget {
                     fit: BoxFit.scaleDown,
                     child: Text(
                       num.toString(),
-                      style: const TextStyle(fontSize: 8, color: Colors.grey),
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey),
                     )),
               );
             }

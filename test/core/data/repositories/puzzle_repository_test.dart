@@ -8,23 +8,22 @@ void main() {
 
   group('PuzzleRepository', () {
     test('loadPacks discovers and loads puzzles from AssetManifest', () async {
-      // Mock AssetManifest.json
-      final manifest = {
-        'assets/puzzles/pack1.json': ['assets/puzzles/pack1.json'],
-        'assets/puzzles/pack2.json': ['assets/puzzles/pack2.json'],
-        'assets/icon/app_icon.png': ['assets/icon/app_icon.png'],
-      };
-
       // Mock Puzzle Packs
-      final pack1 = {
-        "packId": "pack1",
-        "name": "Pack 1",
+      final easyPack = {
+        "packId": "easy",
+        "name": "Easy",
         "version": 1,
         "puzzles": []
       };
-      final pack2 = {
-        "packId": "pack2",
-        "name": "Pack 2",
+      final mediumPack = {
+        "packId": "medium",
+        "name": "Medium",
+        "version": 1,
+        "puzzles": []
+      };
+      final hardPack = {
+        "packId": "hard",
+        "name": "Hard",
         "version": 1,
         "puzzles": []
       };
@@ -34,19 +33,15 @@ void main() {
           .setMockMessageHandler('flutter/assets', (ByteData? message) async {
         final String key = utf8.decode(message!.buffer.asUint8List());
 
-        if (key == 'AssetManifest.bin') {
-          final ByteData? data =
-              const StandardMessageCodec().encodeMessage(manifest);
-          return data;
-        } else if (key == 'AssetManifest.json') {
+        if (key == 'assets/puzzles/easy_pack.json') {
           return ByteData.view(
-              Uint8List.fromList(utf8.encode(jsonEncode(manifest))).buffer);
-        } else if (key == 'assets/puzzles/pack1.json') {
+              Uint8List.fromList(utf8.encode(jsonEncode(easyPack))).buffer);
+        } else if (key == 'assets/puzzles/medium_pack.json') {
           return ByteData.view(
-              Uint8List.fromList(utf8.encode(jsonEncode(pack1))).buffer);
-        } else if (key == 'assets/puzzles/pack2.json') {
+              Uint8List.fromList(utf8.encode(jsonEncode(mediumPack))).buffer);
+        } else if (key == 'assets/puzzles/hard_pack.json') {
           return ByteData.view(
-              Uint8List.fromList(utf8.encode(jsonEncode(pack2))).buffer);
+              Uint8List.fromList(utf8.encode(jsonEncode(hardPack))).buffer);
         }
 
         return null;
@@ -55,9 +50,10 @@ void main() {
       final repo = PuzzleRepository();
       final packs = await repo.loadPacks();
 
-      expect(packs.length, 2);
-      expect(packs.any((p) => p.id == 'pack1'), true);
-      expect(packs.any((p) => p.id == 'pack2'), true);
+      expect(packs.length, 3);
+      expect(packs.any((p) => p.id == 'easy'), true);
+      expect(packs.any((p) => p.id == 'medium'), true);
+      expect(packs.any((p) => p.id == 'hard'), true);
 
       // Cleanup for other tests
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
