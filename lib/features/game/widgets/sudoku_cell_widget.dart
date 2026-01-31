@@ -26,16 +26,16 @@ class SudokuCellWidget extends StatelessWidget {
     // Determine background color
     Color? bgColor;
     if (isSelected) {
-      bgColor = Colors.blue.withOpacity(0.5);
+      bgColor = Colors.blue.withValues(alpha: 0.5);
     } else if (isSameNumber) {
-      bgColor = Colors.blue.withOpacity(0.3);
+      bgColor = Colors.blue.withValues(alpha: 0.3);
     } else if (isHighlighted) {
-      bgColor = Colors.blue.withOpacity(0.1);
+      bgColor = Colors.blue.withValues(alpha: 0.1);
     } else if (cell.isFixed) {
       // Adaptive grey for light/dark mode
       bgColor = Theme.of(context).brightness == Brightness.dark
-          ? Colors.white.withOpacity(0.1)
-          : Colors.grey.withOpacity(0.2);
+          ? Colors.white.withValues(alpha: 0.1)
+          : Colors.grey.withValues(alpha: 0.2);
     }
 
     return GestureDetector(

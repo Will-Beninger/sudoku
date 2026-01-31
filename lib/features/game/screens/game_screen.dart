@@ -47,28 +47,30 @@ class _GameScreenState extends State<GameScreen> {
           event.logicalKey == LogicalKeyboardKey.numpad1) {
         number = 1;
       } else if (event.logicalKey == LogicalKeyboardKey.digit2 ||
-          event.logicalKey == LogicalKeyboardKey.numpad2)
+          event.logicalKey == LogicalKeyboardKey.numpad2) {
         number = 2;
-      else if (event.logicalKey == LogicalKeyboardKey.digit3 ||
-          event.logicalKey == LogicalKeyboardKey.numpad3)
+      } else if (event.logicalKey == LogicalKeyboardKey.digit3 ||
+          event.logicalKey == LogicalKeyboardKey.numpad3) {
         number = 3;
-      else if (event.logicalKey == LogicalKeyboardKey.digit4 ||
-          event.logicalKey == LogicalKeyboardKey.numpad4)
+      } else if (event.logicalKey == LogicalKeyboardKey.digit4 ||
+          event.logicalKey == LogicalKeyboardKey.numpad4) {
         number = 4;
-      else if (event.logicalKey == LogicalKeyboardKey.digit5 ||
-          event.logicalKey == LogicalKeyboardKey.numpad5)
+      } else if (event.logicalKey == LogicalKeyboardKey.digit5 ||
+          event.logicalKey == LogicalKeyboardKey.numpad5) {
         number = 5;
-      else if (event.logicalKey == LogicalKeyboardKey.digit6 ||
-          event.logicalKey == LogicalKeyboardKey.numpad6)
+      } else if (event.logicalKey == LogicalKeyboardKey.digit6 ||
+          event.logicalKey == LogicalKeyboardKey.numpad6) {
         number = 6;
-      else if (event.logicalKey == LogicalKeyboardKey.digit7 ||
-          event.logicalKey == LogicalKeyboardKey.numpad7)
+      } else if (event.logicalKey == LogicalKeyboardKey.digit7 ||
+          event.logicalKey == LogicalKeyboardKey.numpad7) {
         number = 7;
-      else if (event.logicalKey == LogicalKeyboardKey.digit8 ||
-          event.logicalKey == LogicalKeyboardKey.numpad8)
+      } else if (event.logicalKey == LogicalKeyboardKey.digit8 ||
+          event.logicalKey == LogicalKeyboardKey.numpad8) {
         number = 8;
-      else if (event.logicalKey == LogicalKeyboardKey.digit9 ||
-          event.logicalKey == LogicalKeyboardKey.numpad9) number = 9;
+      } else if (event.logicalKey == LogicalKeyboardKey.digit9 ||
+          event.logicalKey == LogicalKeyboardKey.numpad9) {
+        number = 9;
+      }
 
       if (number != null) {
         game.inputNumber(number);
