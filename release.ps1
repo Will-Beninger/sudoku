@@ -47,9 +47,10 @@ $apkDest = "$artifactsDir\sudoku_android_$version.apk"
 Copy-Item $apkSource $apkDest -Force
 Write-Host "[Android] Artifact created: $apkDest" -ForegroundColor Green
 
-# --- WEB ---
-Write-Host "`n[Web] Building Web..." -ForegroundColor Cyan
-flutter build web --release
+# --- WEB & DEPLOY ---
+Write-Host "`n[Web] Building Web (Base URL: /sudoku/)..." -ForegroundColor Cyan
+# Build with base-href for GitHub Pages
+flutter build web --release --base-href "/sudoku/"
 if ($LASTEXITCODE -ne 0) { Write-Error "Web build failed"; exit 1 }
 
 $webBuildDir = "build\web"
@@ -59,6 +60,37 @@ if (Test-Path $webZip) { Remove-Item $webZip }
 Write-Host "[Web] Archiving..." -ForegroundColor Cyan
 Compress-Archive -Path "$webBuildDir\*" -DestinationPath $webZip -Force
 Write-Host "[Web] Artifact created: $webZip" -ForegroundColor Green
+
+# Deploy to gh-pages
+Write-Host "`n[Start Web Deployment] Pushing to gh-pages..." -ForegroundColor Yellow
+$currentLocation = Get-Location
+$remoteUrl = git remote get-url origin
+
+# Push Main first (optional but good practice)
+Write-Host "Pushing main branch..."
+try { git push origin main } catch { Write-Warning "Failed to push main (might be up to date or auth issue)." }
+
+# Deploy
+try {
+    Set-Location $webBuildDir
+    
+    if (Test-Path .git) { Remove-Item .git -Recurse -Force }
+    git init
+    git checkout -b gh-pages
+    git add .
+    git commit -m "Deploy Web Build $version"
+    git remote add origin $remoteUrl
+    
+    git push -f origin gh-pages
+    Write-Host "Deployed to gh-pages successfully!" -ForegroundColor Green
+    Write-Host "App URL: https://Will-Beninger.github.io/sudoku/" -ForegroundColor Cyan
+}
+catch {
+    Write-Error "Failed to deploy to gh-pages: $_"
+}
+finally {
+    Set-Location $currentLocation
+}
 
 
 # --- TAGGING ---
@@ -70,10 +102,6 @@ else {
     git tag -a $tag -m "Release $version"
     Write-Host "Tag created."
 }
-# Attempt push (might fail if remote exists, user handles errors)
-# git push origin $tag 
-# Commented out auto-push to be safe, user can push manually or uncomment. 
-# actually, let's push it as requested in original script.
 git push origin $tag
 
 
