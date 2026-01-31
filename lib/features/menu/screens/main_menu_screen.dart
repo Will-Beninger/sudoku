@@ -2,10 +2,10 @@ import 'dart:io' as converted;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
-import 'package:sudoku_poc/features/menu/screens/level_select_screen.dart';
-import 'package:sudoku_poc/features/settings/settings_provider.dart';
-import 'package:sudoku_poc/features/settings/screens/options_screen.dart';
+import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/features/menu/screens/level_select_screen.dart';
+import 'package:sudoku/features/settings/settings_provider.dart';
+import 'package:sudoku/features/settings/screens/options_screen.dart';
 
 import 'package:package_info_plus/package_info_plus.dart';
 

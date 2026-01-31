@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/core/data/models/puzzle.dart';
-import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/game/screens/game_screen.dart';
+import 'package:sudoku/core/data/models/puzzle.dart';
+import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/features/game/game_provider.dart';
+import 'package:sudoku/features/game/screens/game_screen.dart';
 
 class LevelSelectScreen extends StatefulWidget {
   const LevelSelectScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/game/widgets/hint_button_widget.dart';
-import 'package:sudoku_poc/features/game/widgets/number_pad_widget.dart';
+import 'package:sudoku/features/game/game_provider.dart';
+import 'package:sudoku/features/game/widgets/hint_button_widget.dart';
+import 'package:sudoku/features/game/widgets/number_pad_widget.dart';
 
 class GameControlsWidget extends StatelessWidget {
   final bool useLargeControls;
@@ -14,17 +14,7 @@ class GameControlsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Header: Timer (Centered)
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Consumer<GameProvider>(builder: (_, game, __) {
-            final t = game.elapsedTime;
-            return Text(
-              '${t.inMinutes}:${(t.inSeconds % 60).toString().padLeft(2, '0')}',
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            );
-          }),
-        ),
+        // Header: Timer REMOVED (Moved to GameScreen)
 
         // Feedback Message (Reserved Space to prevent jump)
         SizedBox(

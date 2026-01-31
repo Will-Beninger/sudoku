@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/settings/settings_provider.dart';
+import 'package:sudoku/features/game/game_provider.dart';
+import 'package:sudoku/features/settings/settings_provider.dart';
 
 class NumberPadWidget extends StatelessWidget {
   final ValueChanged<int> onNumberSelected;

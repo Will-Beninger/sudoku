@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sudoku_poc/core/sudoku/grid.dart';
+import 'package:sudoku/core/sudoku/grid.dart';
 
 void main() {
   group('SudokuGrid', () {

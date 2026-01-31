@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/game/widgets/game_controls_widget.dart';
-import 'package:sudoku_poc/features/game/widgets/sudoku_board_widget.dart';
-import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
-import 'package:sudoku_poc/features/game/widgets/win_dialog_widget.dart';
-import 'package:sudoku_poc/features/settings/widgets/options_list_widget.dart';
+import 'package:sudoku/features/game/game_provider.dart';
+import 'package:sudoku/features/game/widgets/game_controls_widget.dart';
+import 'package:sudoku/features/game/widgets/sudoku_board_widget.dart';
+import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/features/game/widgets/win_dialog_widget.dart';
+import 'package:sudoku/features/settings/widgets/options_list_widget.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -182,15 +182,25 @@ class _GameScreenState extends State<GameScreen> {
                     // Board (Left)
                     Expanded(
                       flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 600),
-                            child: const SudokuBoardWidget(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildTimer(),
+                          const SizedBox(height: 16),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(32.0),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 600),
+                                  child: const SudokuBoardWidget(),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
 
@@ -223,12 +233,22 @@ class _GameScreenState extends State<GameScreen> {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 800),
-                              child: const SudokuBoardWidget(),
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildTimer(),
+                              const SizedBox(height: 16),
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: ConstrainedBox(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 800),
+                                    child: const SudokuBoardWidget(),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -258,6 +278,16 @@ class _GameScreenState extends State<GameScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildTimer() {
+    return Consumer<GameProvider>(builder: (_, game, __) {
+      final t = game.elapsedTime;
+      return Text(
+        '${t.inMinutes}:${(t.inSeconds % 60).toString().padLeft(2, '0')}',
+        style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      );
+    });
   }
 }
 

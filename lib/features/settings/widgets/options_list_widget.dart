@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/features/settings/settings_provider.dart';
+import 'package:sudoku/features/settings/settings_provider.dart';
 
 class OptionsListWidget extends StatelessWidget {
   const OptionsListWidget({super.key});

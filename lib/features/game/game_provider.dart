@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sudoku_poc/core/data/models/puzzle.dart';
-import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
-import 'package:sudoku_poc/core/sudoku/grid.dart';
+import 'package:sudoku/core/data/models/puzzle.dart';
+import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/core/sudoku/grid.dart';
 
 class GameProvider extends ChangeNotifier {
   SudokuGrid _grid = SudokuGrid.empty();

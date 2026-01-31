@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/menu/screens/main_menu_screen.dart';
-import 'package:sudoku_poc/features/settings/settings_provider.dart';
+import 'package:sudoku/features/game/game_provider.dart';
+import 'package:sudoku/features/menu/screens/main_menu_screen.dart';
+import 'package:sudoku/features/settings/settings_provider.dart';
 
 void main() {
   runApp(const SudokuApp());

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sudoku_poc/core/sudoku/cell.dart';
+import 'package:sudoku/core/sudoku/cell.dart';
 
 class SudokuCellWidget extends StatelessWidget {
   final SudokuCell cell;

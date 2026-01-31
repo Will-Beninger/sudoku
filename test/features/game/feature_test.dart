@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
+import 'package:sudoku/features/game/game_provider.dart';
 
 void main() {
   group('GameProvider Features', () {

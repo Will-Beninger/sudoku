@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sudoku_poc/core/data/models/puzzle.dart';
+import 'package:sudoku/core/data/models/puzzle.dart';
 
 class PuzzleRepository {
   final SharedPreferences? _prefs;

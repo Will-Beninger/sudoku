@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/features/game/widgets/sudoku_cell_widget.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
-import 'package:sudoku_poc/features/settings/settings_provider.dart';
+import 'package:sudoku/features/game/widgets/sudoku_cell_widget.dart';
+import 'package:sudoku/features/game/game_provider.dart';
+import 'package:sudoku/features/settings/settings_provider.dart';
 
 class SudokuBoardWidget extends StatelessWidget {
   const SudokuBoardWidget({super.key});

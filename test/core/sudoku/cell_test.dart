@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sudoku_poc/core/sudoku/cell.dart';
+import 'package:sudoku/core/sudoku/cell.dart';
 
 void main() {
   group('SudokuCell', () {

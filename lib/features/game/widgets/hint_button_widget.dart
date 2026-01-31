@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku_poc/features/game/game_provider.dart';
+import 'package:sudoku/features/game/game_provider.dart';
 
 class HintButtonWidget extends StatelessWidget {
   final bool useLargeControls;

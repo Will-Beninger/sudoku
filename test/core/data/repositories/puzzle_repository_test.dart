@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sudoku_poc/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
