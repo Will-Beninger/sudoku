@@ -1,4 +1,5 @@
 import 'dart:io' as converted;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -151,12 +152,15 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
-                      if (converted.Platform.isWindows ||
-                          converted.Platform.isLinux ||
-                          converted.Platform.isMacOS) {
-                        converted.exit(0);
+                      if (!kIsWeb) {
+                        if (converted.Platform.isWindows ||
+                            converted.Platform.isLinux ||
+                            converted.Platform.isMacOS) {
+                          converted.exit(0);
+                        }
                       } else {
-                        SystemNavigator.pop();
+                        // Web exit not generally supported, but can try
+                        // SystemNavigator.pop() or just do nothing/hide button
                       }
                     },
                     child: const Text('Exit Game',
