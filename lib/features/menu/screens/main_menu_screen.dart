@@ -70,7 +70,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           Consumer<SettingsProvider>(
             builder: (context, settings, child) => IconButton(
               icon: Icon(
-                  settings.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+                settings.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+              ),
               onPressed: settings.toggleTheme,
             ),
           ),
@@ -107,12 +108,17 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 48, vertical: 16),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primaryContainer,
+                            horizontal: 48,
+                            vertical: 16,
+                          ),
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer,
                         ),
-                        child: const Text('Continue Game',
-                            style: TextStyle(fontSize: 24)),
+                        child: const Text(
+                          'Continue Game',
+                          style: TextStyle(fontSize: 24),
+                        ),
                       ),
                     ),
                   ElevatedButton(
@@ -120,15 +126,20 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LevelSelectScreen()),
+                          builder: (context) => const LevelSelectScreen(),
+                        ),
                       ).then((_) => _checkSavedGame());
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 48, vertical: 16),
+                        horizontal: 48,
+                        vertical: 16,
+                      ),
                     ),
-                    child:
-                        const Text('Play Game', style: TextStyle(fontSize: 24)),
+                    child: const Text(
+                      'Play Game',
+                      style: TextStyle(fontSize: 24),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   OutlinedButton(
@@ -144,28 +155,28 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const OptionsScreen()),
+                          builder: (context) => const OptionsScreen(),
+                        ),
                       );
                     },
                     child: const Text('Options'),
                   ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      if (!kIsWeb) {
+                  if (!kIsWeb) ...[
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
                         if (converted.Platform.isWindows ||
                             converted.Platform.isLinux ||
                             converted.Platform.isMacOS) {
                           converted.exit(0);
                         }
-                      } else {
-                        // Web exit not generally supported, but can try
-                        // SystemNavigator.pop() or just do nothing/hide button
-                      }
-                    },
-                    child: const Text('Exit Game',
-                        style: TextStyle(color: Colors.red)),
-                  ),
+                      },
+                      child: const Text(
+                        'Exit Game',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 16), // Bottom padding for scroll
                 ],
               ),
