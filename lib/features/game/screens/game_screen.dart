@@ -15,20 +15,63 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _focusNode = FocusNode();
     _focusNode.requestFocus(); // Auto-focus for keyboard input
+
+    // Start timer only when view is ready
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<GameProvider>().resumeTimer();
+      }
+    });
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _focusNode.dispose();
+    // Pause timer when leaving screen
+    // Note: We use the context before super.dispose but typically read inside dispose is unsafe if widget unmounted?
+    // It's safe to assume provider exists if we are in tree, but handle gracefully.
+    // However, context usage in dispose is generally discouraged if it depends on InheritedWidgets.
+    // Solution: Save reference or rely on the fact that we can still access it?
+    // Actually, calling a method on a provided object is fine if we have reference.
+    // But `context.read` looks up tree. Tree is still valid in dispose.
+    _pauseGameTimer();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      _pauseGameTimer();
+    } else if (state == AppLifecycleState.resumed) {
+      _resumeGameTimer();
+    }
+  }
+
+  void _pauseGameTimer() {
+    // Check mounted to be safe? dispose calls this though.
+    // We try/catch just in case provider is gone (unlikely)
+    try {
+      context.read<GameProvider>().pauseTimer();
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  void _resumeGameTimer() {
+    if (mounted) {
+      context.read<GameProvider>().resumeTimer();
+    }
   }
 
   void _handleKeyEvent(KeyEvent event) {

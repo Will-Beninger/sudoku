@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sudoku/core/data/models/game_state.dart';
 import 'package:sudoku/core/data/models/puzzle.dart';
 import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku/core/sudoku/grid.dart';
@@ -51,9 +52,9 @@ class GameProvider extends ChangeNotifier {
   String? _feedbackMessage;
   String? get feedbackMessage => _feedbackMessage;
 
-  GameProvider() {
-    // No auto-start
-  }
+  final PuzzleRepository? _repository;
+
+  GameProvider({PuzzleRepository? repository}) : _repository = repository;
 
   @override
   void dispose() {
@@ -66,12 +67,67 @@ class GameProvider extends ChangeNotifier {
   void startPuzzle(Puzzle puzzle) {
     _currentPuzzle = puzzle;
     _restartGameInternal(puzzle);
+    _saveGame();
   }
 
   void restartGame() {
     if (_currentPuzzle != null) {
+      _deleteSavedGame();
       _restartGameInternal(_currentPuzzle!);
+      _saveGame();
+      resumeTimer(); // Explicitly restart timer for in-game restart
     }
+  }
+
+  Future<void> loadSavedGame() async {
+    if (_repository == null) return;
+
+    _isLoading = true;
+    notifyListeners();
+
+    final state = await _repository!.loadGame();
+    if (state != null) {
+      // Safety check: If the loaded game is already complete, strictly delete it and don't load.
+      if (state.grid.isComplete) {
+        await _deleteSavedGame();
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+
+      _currentPuzzle = state.puzzle;
+      _grid = state.grid;
+      _elapsedTime = state.elapsedTime;
+      // If saving won state, we need to handle it. For now assuming in-progress.
+      _isWon = false;
+
+      // Timer will be started by View
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> _saveGame() async {
+    // Prevent saving if won OR if grid is complete (race condition safety)
+    if (_repository == null ||
+        _currentPuzzle == null ||
+        _isWon ||
+        _grid.isComplete) {
+      return;
+    }
+
+    final state = GameState(
+      puzzle: _currentPuzzle!,
+      grid: _grid,
+      elapsedTime: _elapsedTime,
+      lastPlayed: DateTime.now(),
+    );
+    await _repository.saveGame(state);
+  }
+
+  Future<void> _deleteSavedGame() async {
+    await _repository?.deleteSavedGame();
   }
 
   void _restartGameInternal(Puzzle puzzle) {
@@ -88,19 +144,32 @@ class GameProvider extends ChangeNotifier {
     _elapsedTime = Duration.zero;
     notifyListeners();
 
-    // Initialize Grid from Puzzle Data (sync for now, but keeping structure valid)
+    // Initialize Grid from Puzzle Data
     _grid = SudokuGrid.fromIntList(puzzle.initialGrid);
 
     _isLoading = false;
-    _startTimer();
+    // NOTE: We do NOT start timer here automatically anymore.
+    // The View is responsible for calling resumeTimer() when ready.
     notifyListeners();
   }
 
-  void _startTimer() {
+  void resumeTimer() {
+    if (_isWon) return;
+    _timer?.cancel(); // Ensure no duplicate timers
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _elapsedTime += const Duration(seconds: 1);
+
+      if (_elapsedTime.inSeconds % 10 == 0) {
+        _saveGame();
+      }
       notifyListeners();
     });
+  }
+
+  void pauseTimer() {
+    _timer?.cancel();
+    _timer = null;
+    _saveGame(); // Save progress when pausing
   }
 
   void selectCell(int row, int col) {
@@ -118,6 +187,7 @@ class GameProvider extends ChangeNotifier {
   void undo() {
     if (_history.isEmpty || _isWon) return;
     _grid = _history.removeLast();
+    _saveGame();
     notifyListeners();
   }
 
@@ -143,16 +213,17 @@ class GameProvider extends ChangeNotifier {
       }
       _grid = _grid.updateCellNotes(_selectedRow!, _selectedCol!, newNotes);
     } else {
-      _conflictingCells.clear(); // Clear old conflicts on new input
+      _conflictingCells.clear();
       _feedbackMessage = null;
       _grid = _grid.updateCell(_selectedRow!, _selectedCol!, number);
 
-      // Check Win
       if (_grid.isComplete) {
         _handleWin();
+        notifyListeners(); // Notify UI of win
+        return; // EXIT: Do not save game if won
       }
     }
-
+    _saveGame();
     notifyListeners();
   }
 
@@ -162,22 +233,29 @@ class GameProvider extends ChangeNotifier {
     if (_grid.rows[_selectedRow!][_selectedCol!].isFixed) return;
 
     _recordHistory();
-    _conflictingCells.clear(); // Clear old conflicts
+    _conflictingCells.clear();
     _feedbackMessage = null;
-    // Clear value
     _grid = _grid.updateCell(_selectedRow!, _selectedCol!, null);
-    // Also clear notes
     _grid = _grid.updateCellNotes(_selectedRow!, _selectedCol!, {});
+    _saveGame();
     notifyListeners();
   }
 
   void _handleWin() async {
     _isWon = true;
+    // Ensure timer is stopped immediately
     _timer?.cancel();
     _hintCooldownTimer?.cancel();
+    _conflictCooldownTimer?.cancel(); // Also cancel conflict timer
+
+    // Fire-and-forget delete, but we rely on _isWon/isComplete guard in _saveGame to prevent race re-save.
+    // We should await this if possible to ensure consistency before notifying listeners?
+    // Since this method is async void, we can await inside.
+    await _deleteSavedGame();
 
     if (_currentPuzzle != null) {
-      final repo = await PuzzleRepository.create();
+      // Use injected repo if available, else create (fallback)
+      final repo = _repository ?? await PuzzleRepository.create();
       await repo.completeLevel(_currentPuzzle!.id, _elapsedTime);
     }
     notifyListeners();

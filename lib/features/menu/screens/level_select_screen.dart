@@ -23,6 +23,8 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
   String? _expandedPackName; // Which pack is open?
   Difficulty? _expandedDifficulty; // Which difficulty is open?
 
+  String? _savedPuzzleId; // ID of the currently saved puzzle
+
   @override
   void initState() {
     super.initState();
@@ -30,9 +32,15 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
   }
 
   void _loadRepo() async {
-    _repo = widget.repository ?? await PuzzleRepository.create();
+    // Use injected repository from widget or Provider
+    _repo = widget.repository ?? context.read<PuzzleRepository>();
+
+    // Load saved puzzle ID
+    final savedId = await _repo.getSavedPuzzleId();
+
     if (mounted) {
       setState(() {
+        _savedPuzzleId = savedId;
         _packsFuture = _repo.loadPacks();
       });
     }
@@ -114,27 +122,53 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                       final puzzle = item.puzzle;
                       final isCompleted = _repo.isLevelCompleted(puzzle.id);
                       final bestTime = _repo.getBestTime(puzzle.id);
+                      final isSaved = _savedPuzzleId == puzzle.id;
 
                       return ListTile(
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 48.0),
                         leading: CircleAvatar(
-                          backgroundColor:
-                              isCompleted ? Colors.green : Colors.grey,
+                          backgroundColor: isCompleted
+                              ? Colors.green
+                              : (isSaved ? Colors.orange : Colors.grey),
                           child: isCompleted
                               ? const Icon(Icons.check, color: Colors.white)
-                              : Text(puzzle.id.contains('_')
-                                  ? int.parse(puzzle.id.split('_').last)
-                                      .toString()
-                                  : puzzle.id),
+                              : isSaved
+                                  ? const Icon(Icons.play_arrow,
+                                      color: Colors.white)
+                                  : Text(puzzle.id.contains('_')
+                                      ? int.parse(puzzle.id.split('_').last)
+                                          .toString()
+                                      : puzzle.id),
                         ),
-                        title: Text('Puzzle ${puzzle.id}'),
+                        title: Row(
+                          children: [
+                            Text('Puzzle ${puzzle.id}'),
+                            if (isSaved)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                      color: Colors.orange.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(color: Colors.orange)),
+                                  child: const Text('In Progress',
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.orange,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              )
+                          ],
+                        ),
                         subtitle: bestTime != null
                             ? Text(
                                 "Best: ${bestTime.inMinutes}:${(bestTime.inSeconds % 60).toString().padLeft(2, '0')}")
                             : null,
                         onTap: () {
-                          _launchLevel(context, puzzle);
+                          _launchLevel(context, puzzle, isSaved);
                         },
                       );
                     }
@@ -181,8 +215,76 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
     return items;
   }
 
-  void _launchLevel(BuildContext context, Puzzle puzzle) {
-    // Update GameProvider with new puzzle
+  void _launchLevel(
+      BuildContext context, Puzzle puzzle, bool isCurrentSave) async {
+    if (isCurrentSave) {
+      final choice = await showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Resume Game?'),
+          content: const Text('You have an in-progress game for this level.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'restart'),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Restart Level'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, 'resume'),
+              child: const Text('Resume'),
+            ),
+          ],
+        ),
+      );
+
+      if (choice == 'cancel' || choice == null) return;
+
+      if (!context.mounted) return;
+
+      if (choice == 'resume') {
+        // Load saved
+        await context.read<GameProvider>().loadSavedGame();
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const GameScreen()),
+          ).then((_) => _loadRepo()); // Refresh status on return
+        }
+        return;
+      }
+      // If restart, fall through to startPuzzle logic (overwrite effectively)
+    } else if (_repo.hasSavedGame()) {
+      // Trying to play different level but save exists
+      final shouldProceed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Start New Game?'),
+          content: const Text(
+              'You have a saved game in progress on another level. Starting this new game will delete your current progress.\n\nAre you sure?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false), // Cancel
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true), // Confirm
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Start New Game'),
+            ),
+          ],
+        ),
+      );
+
+      if (shouldProceed != true) return;
+    }
+
+    if (!context.mounted) return;
+
+    // Start New Game (or Restart)
     context.read<GameProvider>().startPuzzle(puzzle);
 
     // Navigate to GameScreen
@@ -190,10 +292,7 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
       context,
       MaterialPageRoute(builder: (context) => const GameScreen()),
     ).then((_) {
-      // Refresh state when coming back (to update completed status)
-      setState(() {
-        // Trigger rebuild to fetch updated completed status from repo
-      });
+      _loadRepo(); // Refresh status on return
     });
   }
 }

@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku/features/game/game_provider.dart';
 import 'package:sudoku/features/menu/screens/main_menu_screen.dart';
 import 'package:sudoku/features/settings/settings_provider.dart';
 
-void main() {
-  runApp(const SudokuApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final repo = await PuzzleRepository.create();
+  runApp(SudokuApp(repository: repo));
 }
 
 class SudokuApp extends StatelessWidget {
-  const SudokuApp({super.key});
+  final PuzzleRepository repository;
+
+  const SudokuApp({super.key, required this.repository});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<PuzzleRepository>.value(value: repository),
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
-        ChangeNotifierProvider(create: (_) => GameProvider()),
+        ChangeNotifierProvider(
+            create: (_) => GameProvider(repository: repository)),
       ],
       child: Consumer<SettingsProvider>(
         builder: (context, settings, child) {

@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
 import 'package:sudoku/features/menu/screens/level_select_screen.dart';
+import 'package:sudoku/features/game/game_provider.dart';
+import 'package:sudoku/features/game/screens/game_screen.dart';
 import 'package:sudoku/features/settings/settings_provider.dart';
 import 'package:sudoku/features/settings/screens/options_screen.dart';
 
@@ -18,11 +20,35 @@ class MainMenuScreen extends StatefulWidget {
 
 class _MainMenuScreenState extends State<MainMenuScreen> {
   String _version = '';
+  bool _hasSavedGame = false;
 
   @override
   void initState() {
     super.initState();
     _loadVersion();
+    _checkSavedGame();
+  }
+
+  Future<void> _checkSavedGame() async {
+    // Brief delay to ensure provider is ready if needed, though usually safe in initState callback flow
+    await Future.microtask(() {});
+    if (!mounted) return;
+
+    final repo = context.read<PuzzleRepository>();
+    final game = context.read<GameProvider>();
+
+    bool hasSave = repo.hasSavedGame();
+
+    // If we just won the game, rely on memory state even if disk hasn't caught up
+    if (game.isWon) {
+      hasSave = false;
+    }
+
+    if (mounted) {
+      setState(() {
+        _hasSavedGame = hasSave;
+      });
+    }
   }
 
   Future<void> _loadVersion() async {
@@ -71,13 +97,30 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 48),
+                  if (_hasSavedGame)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _continueGame(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 48, vertical: 16),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                        child: const Text('Continue Game',
+                            style: TextStyle(fontSize: 24)),
+                      ),
+                    ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const LevelSelectScreen()),
-                      );
+                      ).then((_) => _checkSavedGame());
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -141,9 +184,21 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     );
   }
 
+  void _continueGame(BuildContext context) async {
+    final gameProvider = context.read<GameProvider>();
+    await gameProvider.loadSavedGame();
+
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const GameScreen()),
+      ).then((_) => _checkSavedGame()); // Re-check when coming back
+    }
+  }
+
   void _showStatsDialog(BuildContext context) async {
-    // Quick hack to show stats for PoC
-    final repo = await PuzzleRepository.create();
+    // Use Provider to get repo
+    final repo = context.read<PuzzleRepository>();
     final stats = repo.getStats();
 
     if (!context.mounted) return;

@@ -116,4 +116,22 @@ class SudokuGrid extends Equatable {
 
   @override
   List<Object?> get props => [rows];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'rows':
+          rows.map((row) => row.map((cell) => cell.toJson()).toList()).toList(),
+    };
+  }
+
+  factory SudokuGrid.fromJson(Map<String, dynamic> json) {
+    final rowsList = json['rows'] as List<dynamic>;
+    return SudokuGrid(
+      rows: rowsList.map((row) {
+        return (row as List<dynamic>)
+            .map((cell) => SudokuCell.fromJson(cell))
+            .toList();
+      }).toList(),
+    );
+  }
 }

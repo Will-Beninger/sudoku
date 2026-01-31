@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sudoku/core/data/models/game_state.dart';
 import 'package:sudoku/core/data/models/puzzle.dart';
 
 class PuzzleRepository {
@@ -62,6 +63,48 @@ class PuzzleRepository {
   }
 
   // --- Persistence ---
+
+  static const String _savedGameKey = 'current_saved_game';
+
+  Future<void> saveGame(GameState state) async {
+    final jsonString = jsonEncode(state.toJson());
+    await _prefs?.setString(_savedGameKey, jsonString);
+  }
+
+  Future<GameState?> loadGame() async {
+    final jsonString = _prefs?.getString(_savedGameKey);
+    if (jsonString == null) return null;
+    try {
+      final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
+      return GameState.fromJson(jsonMap);
+    } catch (e) {
+      debugPrint('Error loading saved game: $e');
+      return null;
+    }
+  }
+
+  Future<void> deleteSavedGame() async {
+    await _prefs?.remove(_savedGameKey);
+  }
+
+  bool hasSavedGame() {
+    return _prefs?.containsKey(_savedGameKey) ?? false;
+  }
+
+  Future<String?> getSavedPuzzleId() async {
+    final jsonString = _prefs?.getString(_savedGameKey);
+    if (jsonString == null) return null;
+    try {
+      // Optimized: Just parse the ID if possible, or decode fully
+      final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
+      // Assuming structure is { 'puzzle': { 'id': '...' } }
+      final puzzleMap = jsonMap['puzzle'] as Map<String, dynamic>;
+      return puzzleMap['id'] as String?;
+    } catch (e) {
+      debugPrint('Error getting saved puzzle ID: $e');
+      return null;
+    }
+  }
 
   bool isLevelCompleted(String puzzleId) {
     final completed = _prefs?.getStringList('completed_levels') ?? [];

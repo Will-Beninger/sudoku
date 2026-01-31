@@ -30,4 +30,23 @@ class SudokuCell extends Equatable {
 
   @override
   List<Object?> get props => [value, isFixed, isValid, notes];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'value': value,
+      'isFixed': isFixed,
+      'isValid': isValid,
+      'notes': notes.toList(),
+    };
+  }
+
+  factory SudokuCell.fromJson(Map<String, dynamic> json) {
+    return SudokuCell(
+      value: json['value'] as int?,
+      isFixed: json['isFixed'] as bool,
+      isValid: json['isValid'] as bool? ?? true,
+      notes:
+          (json['notes'] as List<dynamic>?)?.map((e) => e as int).toSet() ?? {},
+    );
+  }
 }
