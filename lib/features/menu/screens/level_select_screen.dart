@@ -6,7 +6,9 @@ import 'package:sudoku/features/game/game_provider.dart';
 import 'package:sudoku/features/game/screens/game_screen.dart';
 
 class LevelSelectScreen extends StatefulWidget {
-  const LevelSelectScreen({super.key});
+  final PuzzleRepository? repository;
+
+  const LevelSelectScreen({super.key, this.repository});
 
   @override
   State<LevelSelectScreen> createState() => _LevelSelectScreenState();
@@ -28,7 +30,7 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
   }
 
   void _loadRepo() async {
-    _repo = await PuzzleRepository.create();
+    _repo = widget.repository ?? await PuzzleRepository.create();
     if (mounted) {
       setState(() {
         _packsFuture = _repo.loadPacks();
