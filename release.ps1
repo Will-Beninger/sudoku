@@ -107,15 +107,34 @@ git push origin $tag
 
 # --- RELEASE ---
 if (Get-Command "gh" -ErrorAction SilentlyContinue) {
-    Write-Host "`n[GitHub] Creating Draft Release..." -ForegroundColor Cyan
+    Write-Host "`n[GitHub] Verifying Release..." -ForegroundColor Cyan
     
-    # Collect all artifacts
+    # 1. Create Release (idempotent-ish check)
+    # create will fail if tag exists usually, unless it's draft? 
+    # Try to create, ignoring error if it implies existence, then upload.
+    try {
+        gh release create $tag --title "Release $version" --generate-notes --draft
+        Write-Host "GitHub Release created." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "Release might already exist, proceeding to upload artifacts..." -ForegroundColor Yellow
+    }
+    
+    # 2. Upload Artifacts (Robust Loop)
     $files = Get-ChildItem "$artifactsDir\*" | Select-Object -ExpandProperty FullName
     
-    # Create draft release
-    gh release create $tag $files --title "Release $version" --generate-notes --draft
-    
-    Write-Host "GitHub Release draft created with artifacts!" -ForegroundColor Green
+    Write-Host "Uploading artifacts..." -ForegroundColor Cyan
+    foreach ($file in $files) {
+        Write-Host "Uploading $file..."
+        try {
+            gh release upload $tag $file --clobber
+            Write-Host "Uploaded: $(Split-Path $file -Leaf)" -ForegroundColor Green
+        }
+        catch {
+            Write-Error "Failed to upload $file : $_"
+        }
+    }
+
 }
 else {
     Write-Host "`n[GitHub] 'gh' CLI not found. Skipping upload." -ForegroundColor Yellow
