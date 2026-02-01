@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/core/data/models/puzzle.dart';
-import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/core/data/repositories/i_puzzle_repository.dart';
 import 'package:sudoku/features/game/game_provider.dart';
 import 'package:sudoku/features/game/screens/game_screen.dart';
 
 class LevelSelectScreen extends StatefulWidget {
-  final PuzzleRepository? repository;
+  final IPuzzleRepository? repository;
 
   const LevelSelectScreen({super.key, this.repository});
 
@@ -16,7 +16,7 @@ class LevelSelectScreen extends StatefulWidget {
 
 class _LevelSelectScreenState extends State<LevelSelectScreen> {
   Future<List<PuzzlePack>>? _packsFuture;
-  late PuzzleRepository _repo;
+  late IPuzzleRepository _repo;
 
   // State for accordion behavior
   // We assume puzzle packs have unique IDs, or just use names.
@@ -33,7 +33,7 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
 
   void _loadRepo() async {
     // Use injected repository from widget or Provider
-    _repo = widget.repository ?? context.read<PuzzleRepository>();
+    _repo = widget.repository ?? context.read<IPuzzleRepository>();
 
     // Load saved puzzle ID
     final savedId = await _repo.getSavedPuzzleId();
@@ -151,7 +151,8 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 6, vertical: 2),
                                   decoration: BoxDecoration(
-                                      color: Colors.orange.withOpacity(0.2),
+                                      color:
+                                          Colors.orange.withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(4),
                                       border: Border.all(color: Colors.orange)),
                                   child: const Text('In Progress',

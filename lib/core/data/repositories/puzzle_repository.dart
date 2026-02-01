@@ -5,7 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku/core/data/models/game_state.dart';
 import 'package:sudoku/core/data/models/puzzle.dart';
 
-class PuzzleRepository {
+import 'package:sudoku/core/data/repositories/i_puzzle_repository.dart';
+
+class PuzzleRepository implements IPuzzleRepository {
   final SharedPreferences? _prefs;
 
   PuzzleRepository([this._prefs]);
@@ -17,6 +19,7 @@ class PuzzleRepository {
 
   // In a real app, this might load all JSONs from assets/puzzles/
   // For PoC, we will simulate loading a "Standard Pack" with hardcoded data + our previous mock.
+  @override
   Future<List<PuzzlePack>> loadPacks() async {
     try {
       // Hardcoded list of packs to ensure offline availability without relying on Manifest interaction which can be flaky
@@ -46,6 +49,7 @@ class PuzzleRepository {
     }
   }
 
+  @override
   Future<Puzzle?> getNextPuzzle(String currentPuzzleId) async {
     final packs = await loadPacks();
     final allPuzzles = packs.expand((p) => p.puzzles).toList();
@@ -66,11 +70,13 @@ class PuzzleRepository {
 
   static const String _savedGameKey = 'current_saved_game';
 
+  @override
   Future<void> saveGame(GameState state) async {
     final jsonString = jsonEncode(state.toJson());
     await _prefs?.setString(_savedGameKey, jsonString);
   }
 
+  @override
   Future<GameState?> loadGame() async {
     final jsonString = _prefs?.getString(_savedGameKey);
     if (jsonString == null) return null;
@@ -83,14 +89,17 @@ class PuzzleRepository {
     }
   }
 
+  @override
   Future<void> deleteSavedGame() async {
     await _prefs?.remove(_savedGameKey);
   }
 
+  @override
   bool hasSavedGame() {
     return _prefs?.containsKey(_savedGameKey) ?? false;
   }
 
+  @override
   Future<String?> getSavedPuzzleId() async {
     final jsonString = _prefs?.getString(_savedGameKey);
     if (jsonString == null) return null;
@@ -106,16 +115,19 @@ class PuzzleRepository {
     }
   }
 
+  @override
   bool isLevelCompleted(String puzzleId) {
     final completed = _prefs?.getStringList('completed_levels') ?? [];
     return completed.contains(puzzleId);
   }
 
+  @override
   Duration? getBestTime(String puzzleId) {
     final ms = _prefs?.getInt('best_time_$puzzleId');
     return ms != null ? Duration(milliseconds: ms) : null;
   }
 
+  @override
   Future<void> completeLevel(String puzzleId, Duration timeTaken) async {
     final completed = _prefs?.getStringList('completed_levels') ?? [];
     if (!completed.contains(puzzleId)) {
@@ -137,6 +149,7 @@ class PuzzleRepository {
     await _prefs?.setInt('stat_$key', current + 1);
   }
 
+  @override
   Map<String, dynamic> getStats() {
     return {
       'games_won': _prefs?.getInt('stat_games_won') ?? 0,

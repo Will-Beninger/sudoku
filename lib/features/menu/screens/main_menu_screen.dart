@@ -1,9 +1,8 @@
 import 'dart:io' as converted;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/core/data/repositories/i_puzzle_repository.dart';
 import 'package:sudoku/features/menu/screens/level_select_screen.dart';
 import 'package:sudoku/features/game/game_provider.dart';
 import 'package:sudoku/features/game/screens/game_screen.dart';
@@ -35,7 +34,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     await Future.microtask(() {});
     if (!mounted) return;
 
-    final repo = context.read<PuzzleRepository>();
+    final repo = context.read<IPuzzleRepository>();
     final game = context.read<GameProvider>();
 
     bool hasSave = repo.hasSavedGame();
@@ -213,7 +212,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
   void _showStatsDialog(BuildContext context) async {
     // Use Provider to get repo
-    final repo = context.read<PuzzleRepository>();
+    final repo = context.read<IPuzzleRepository>();
     final stats = repo.getStats();
 
     if (!context.mounted) return;

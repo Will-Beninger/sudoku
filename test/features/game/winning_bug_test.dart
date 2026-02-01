@@ -20,7 +20,7 @@ class MockPuzzleRepository implements PuzzleRepository {
 
   @override
   Future<void> deleteSavedGame() async {
-    await Future.delayed(Duration(milliseconds: 10)); // Simulate IO delay
+    await Future.delayed(const Duration(milliseconds: 10)); // Simulate IO delay
     savedState = null;
     deleteCalled = true;
   }
@@ -111,7 +111,7 @@ void main() {
       // This should trigger _handleWin inside inputNumber
 
       // Wait for async operations
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
 
       // Verify Win State
       expect(provider.isWon, true);

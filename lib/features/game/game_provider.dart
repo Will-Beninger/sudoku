@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sudoku/core/data/models/game_state.dart';
 import 'package:sudoku/core/data/models/puzzle.dart';
 import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/core/data/repositories/i_puzzle_repository.dart';
 import 'package:sudoku/core/sudoku/grid.dart';
 
 class GameProvider extends ChangeNotifier {
@@ -52,9 +53,9 @@ class GameProvider extends ChangeNotifier {
   String? _feedbackMessage;
   String? get feedbackMessage => _feedbackMessage;
 
-  final PuzzleRepository? _repository;
+  final IPuzzleRepository? _repository;
 
-  GameProvider({PuzzleRepository? repository}) : _repository = repository;
+  GameProvider({IPuzzleRepository? repository}) : _repository = repository;
 
   @override
   void dispose() {
@@ -85,7 +86,7 @@ class GameProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final state = await _repository!.loadGame();
+    final state = await _repository.loadGame();
     if (state != null) {
       // Safety check: If the loaded game is already complete, strictly delete it and don't load.
       if (state.grid.isComplete) {
@@ -378,8 +379,9 @@ class GameProvider extends ChangeNotifier {
 
   void _startConflictCooldown() {
     _conflictCooldownSeconds = 10;
-    _conflictCooldownTimer =
-        Timer.periodic(const Duration(seconds: 1), (timer) {
+    _conflictCooldownTimer = Timer.periodic(const Duration(seconds: 1), (
+      timer,
+    ) {
       _conflictCooldownSeconds--;
       if (_conflictCooldownSeconds <= 0) {
         timer.cancel();

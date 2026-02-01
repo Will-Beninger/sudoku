@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sudoku/features/game/game_provider.dart';
 import 'package:sudoku/features/game/widgets/game_controls_widget.dart';
 import 'package:sudoku/features/game/widgets/sudoku_board_widget.dart';
-import 'package:sudoku/core/data/repositories/puzzle_repository.dart';
+import 'package:sudoku/core/data/repositories/i_puzzle_repository.dart';
 import 'package:sudoku/features/game/widgets/win_dialog_widget.dart';
 import 'package:sudoku/features/settings/widgets/options_list_widget.dart';
 
@@ -354,7 +354,7 @@ class _WinReflectorState extends State<_WinReflector> {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         VoidCallback? onNext;
         if (game.currentPuzzle != null) {
-          final repo = await PuzzleRepository.create();
+          final repo = context.read<IPuzzleRepository>();
           final nextPuzzle = await repo.getNextPuzzle(game.currentPuzzle!.id);
           if (nextPuzzle != null) {
             onNext = () {
