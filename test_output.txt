@@ -1,0 +1,23 @@
+00:00 +0: loading C:/Users/Will/Downloads/sudoku/test/ui/main_menu_ui_test.dart
+test/ui/main_menu_ui_test.dart:11:8: Error: Error when reading 'helpers/device_simulators.dart': The system cannot find the path specified
+import '../../helpers/device_simulators.dart';
+       ^
+test/ui/main_menu_ui_test.dart:53:5: Error: Method not found: 'testUI'.
+    testUI('Renders critical elements', callback: (tester, deviceSize) async {
+    ^^^^^^
+test/ui/main_menu_ui_test.dart:73:5: Error: Method not found: 'testUI'.
+    testUI('Does not overflow', callback: (tester, deviceSize) async {
+    ^^^^^^
+00:00 +0 -1: loading C:/Users/Will/Downloads/sudoku/test/ui/main_menu_ui_test.dart [E]
+  Failed to load "C:/Users/Will/Downloads/sudoku/test/ui/main_menu_ui_test.dart":
+  Compilation failed for testPath=C:/Users/Will/Downloads/sudoku/test/ui/main_menu_ui_test.dart: test/ui/main_menu_ui_test.dart:11:8: Error: Error when reading 'helpers/device_simulators.dart': The system cannot find the path specified
+  import '../../helpers/device_simulators.dart';
+         ^
+  test/ui/main_menu_ui_test.dart:53:5: Error: Method not found: 'testUI'.
+      testUI('Renders critical elements', callback: (tester, deviceSize) async {
+      ^^^^^^
+  test/ui/main_menu_ui_test.dart:73:5: Error: Method not found: 'testUI'.
+      testUI('Does not overflow', callback: (tester, deviceSize) async {
+      ^^^^^^
+  .
+00:00 +0 -1: Some tests failed.

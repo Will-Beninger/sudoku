@@ -1,0 +1,2330 @@
+00:00 +0: loading C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart
+00:00 +0: GameScreen UI Tests  - on Pixel 10 Pro
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/sudoku_board_widget.dart:12:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (19 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#44     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#45     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#46     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#50     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#51     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#52     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#53     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#54     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#55     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#56     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#57     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#58     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#59     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#60     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#61     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#62     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#63     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#64     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#65     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#66     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#67     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#68     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#69     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#70     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#71     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#72     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#73     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#76     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#77     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#78     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#79     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#80     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#81     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#82     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#83     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#107    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#108    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#111    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#120    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#123    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#124    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#125    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#126    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#127    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#128    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#129    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#130    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#131    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#132    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#135    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#136    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#137    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#138    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#139    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#140    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#141    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#142    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#145    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#146    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#147    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#150    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#151    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#152    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:59:20)
+#153    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#154    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#155    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/number_pad_widget.dart:16:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#25     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#56     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#57     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#58     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#62     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#64     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#65     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#66     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#67     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#68     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#69     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#70     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#71     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#72     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#73     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#76     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#77     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#78     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#79     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#80     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#107    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#108    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#109    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#110    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#111    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#119    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#120    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#123    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#124    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#125    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#126    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#127    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#128    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#129    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#132    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#135    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#136    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#137    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#138    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#139    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#140    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#141    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#142    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#143    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#144    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#145    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#146    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#147    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#148    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#149    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#150    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#151    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#152    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#153    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#154    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#157    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#158    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#159    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#162    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#163    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#164    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:59:20)
+#165    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#166    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#167    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+00:00 +0 -1: GameScreen UI Tests  - on Pixel 10 Pro [E]
+  Test failed. See exception logs above.
+  The test description was:  - on Pixel 10 Pro
+  
+00:00 +0 -1: GameScreen UI Tests  - on iPhone 17
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/sudoku_board_widget.dart:12:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (19 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#44     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#45     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#46     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#50     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#51     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#52     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#53     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#54     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#55     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#56     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#57     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#58     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#59     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#60     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#61     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#62     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#63     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#64     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#65     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#66     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#67     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#68     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#69     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#70     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#71     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#72     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#73     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#76     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#77     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#78     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#79     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#80     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#81     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#82     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#83     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#107    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#108    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#111    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#120    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#123    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#124    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#125    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#126    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#127    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#128    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#129    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#130    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#131    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#132    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#135    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#136    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#137    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#138    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#139    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#140    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#141    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#142    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#145    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#146    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#147    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#150    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#151    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#152    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:59:20)
+#153    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#154    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#155    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/number_pad_widget.dart:16:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#25     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#56     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#57     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#58     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#62     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#64     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#65     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#66     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#67     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#68     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#69     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#70     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#71     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#72     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#73     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#76     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#77     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#78     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#79     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#80     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#107    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#108    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#109    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#110    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#111    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#119    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#120    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#123    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#124    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#125    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#126    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#127    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#128    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#129    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#132    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#135    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#136    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#137    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#138    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#139    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#140    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#141    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#142    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#143    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#144    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#145    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#146    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#147    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#148    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#149    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#150    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#151    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#152    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#153    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#154    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#157    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#158    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#159    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#162    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#163    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#164    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:59:20)
+#165    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#166    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#167    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+00:01 +0 -2: GameScreen UI Tests  - on iPhone 17 [E]
+  Test failed. See exception logs above.
+  The test description was:  - on iPhone 17
+  
+00:01 +0 -2: GameScreen UI Tests  - on Laptop
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/sudoku_board_widget.dart:12:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (22 frames)
+#32     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#33     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#34     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (7 frames)
+#41     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#42     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#43     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#47     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#48     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#49     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#50     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#51     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#52     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#53     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#54     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#55     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#56     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#57     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#58     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#59     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#60     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#61     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#62     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#63     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#64     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#65     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#66     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#67     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#68     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#69     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#70     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#71     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#72     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#73     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#74     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#75     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#76     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#77     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#78     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#79     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#80     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#84     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#85     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#86     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#87     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#88     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#89     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#90     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#91     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#92     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#93     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#94     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#95     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#96     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#97     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#98     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#99     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#100    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#101    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#102    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#103    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#107    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#108    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#111    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#112    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#113    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#114    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#115    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#116    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#117    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#120    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#121    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#122    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#123    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#124    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#125    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#126    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#127    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#128    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#129    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#132    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#133    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#134    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#135    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#136    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#137    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#138    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#139    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#142    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#143    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#144    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#147    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#148    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#149    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:59:20)
+#150    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#151    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#152    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/number_pad_widget.dart:16:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#25     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (22 frames)
+#53     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#54     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#55     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#59     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#60     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#61     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#62     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#63     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#64     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#65     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#66     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#67     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#68     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#69     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#70     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#71     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#72     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#73     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#74     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#75     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#76     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#77     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#78     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#79     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#80     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#84     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#85     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#86     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#87     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#88     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#89     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#90     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#91     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#92     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#93     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#94     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#95     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#96     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#97     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#98     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#99     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#100    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#101    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#102    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#103    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#104    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#105    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#106    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#107    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#108    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#111    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#112    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#113    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#114    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#115    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#120    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#123    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#124    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#125    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#126    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#127    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#128    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#129    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#132    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#133    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#134    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#135    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#136    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#137    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#138    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#139    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#140    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#141    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#142    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#143    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#144    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#145    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#146    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#147    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#148    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#149    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#150    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#151    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#154    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#155    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#156    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#159    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#160    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#161    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:59:20)
+#162    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#163    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#164    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+00:01 +0 -3: GameScreen UI Tests  - on Laptop [E]
+  Test failed. See exception logs above.
+  The test description was:  - on Laptop
+  
+00:01 +0 -3: GameScreen UI Tests  - on Pixel 10 Pro
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/sudoku_board_widget.dart:12:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (19 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#44     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#45     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#46     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#50     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#51     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#52     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#53     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#54     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#55     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#56     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#57     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#58     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#59     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#60     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#61     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#62     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#63     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#64     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#65     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#66     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#67     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#68     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#69     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#70     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#71     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#72     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#73     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#76     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#77     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#78     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#79     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#80     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#81     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#82     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#83     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#107    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#108    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#111    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#120    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#123    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#124    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#125    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#126    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#127    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#128    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#129    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#130    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#131    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#132    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#135    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#136    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#137    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#138    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#139    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#140    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#141    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#142    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#145    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#146    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#147    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#150    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#151    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#152    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:69:20)
+#153    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#154    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#155    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/number_pad_widget.dart:16:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#25     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#56     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#57     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#58     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#62     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#64     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#65     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#66     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#67     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#68     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#69     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#70     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#71     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#72     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#73     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#76     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#77     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#78     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#79     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#80     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#107    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#108    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#109    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#110    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#111    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#119    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#120    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#123    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#124    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#125    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#126    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#127    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#128    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#129    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#132    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#135    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#136    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#137    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#138    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#139    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#140    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#141    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#142    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#143    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#144    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#145    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#146    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#147    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#148    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#149    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#150    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#151    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#152    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#153    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#154    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#157    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#158    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#159    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#162    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#163    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#164    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:69:20)
+#165    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#166    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#167    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+00:01 +0 -4: GameScreen UI Tests  - on Pixel 10 Pro [E]
+  Test failed. See exception logs above.
+  The test description was:  - on Pixel 10 Pro
+  
+00:01 +0 -4: GameScreen UI Tests  - on iPhone 17
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/sudoku_board_widget.dart:12:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (19 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#44     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#45     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#46     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#50     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#51     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#52     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#53     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#54     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#55     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#56     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#57     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#58     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#59     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#60     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#61     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#62     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#63     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#64     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#65     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#66     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#67     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#68     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#69     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#70     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#71     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#72     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#73     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#76     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#77     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#78     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#79     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#80     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#81     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#82     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#83     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#107    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#108    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#111    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#120    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#123    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#124    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#125    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#126    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#127    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#128    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#129    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#130    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#131    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#132    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#135    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#136    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#137    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#138    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#139    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#140    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#141    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#142    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#145    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#146    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#147    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#150    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#151    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#152    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:69:20)
+#153    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#154    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#155    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/number_pad_widget.dart:16:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#25     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#56     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#57     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#58     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#62     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#64     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#65     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#66     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#67     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#68     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#69     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#70     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#71     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#72     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#73     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#74     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#75     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#76     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#77     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#78     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#79     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#80     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#84     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#85     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#86     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#87     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#88     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#89     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#90     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#91     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#92     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#93     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#94     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#95     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#96     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#97     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#98     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#99     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#100    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#101    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#102    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#103    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#107    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#108    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#109    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#110    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#111    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#112    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#113    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#114    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#115    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#119    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#120    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#123    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#124    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#125    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#126    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#127    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#128    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#129    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#132    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#133    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#134    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#135    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#136    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#137    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#138    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#139    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#140    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#141    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#142    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#143    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#144    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#145    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#146    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#147    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#148    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#149    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#150    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#151    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#152    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#153    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#154    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#157    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#158    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#159    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#162    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#163    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#164    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:69:20)
+#165    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#166    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#167    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+00:01 +0 -5: GameScreen UI Tests  - on iPhone 17 [E]
+  Test failed. See exception logs above.
+  The test description was:  - on iPhone 17
+  
+00:01 +0 -5: GameScreen UI Tests  - on Laptop
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/sudoku_board_widget.dart:12:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (22 frames)
+#32     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#33     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#34     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (7 frames)
+#41     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#42     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#43     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#47     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#48     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#49     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#50     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#51     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#52     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#53     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#54     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#55     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#56     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#57     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#58     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#59     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#60     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#61     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#62     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#63     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#64     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#65     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#66     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#67     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#68     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#69     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#70     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#71     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#72     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#73     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#74     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#75     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#76     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#77     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#78     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#79     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#80     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#84     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#85     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#86     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#87     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#88     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#89     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#90     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#91     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#92     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#93     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#94     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#95     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#96     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#97     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#98     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#99     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#100    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#101    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#102    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#103    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#104    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#105    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#106    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#107    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#108    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#111    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#112    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#113    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#114    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#115    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#116    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#117    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#120    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#121    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#122    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#123    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#124    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#125    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#126    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#127    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#128    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#129    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#132    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#133    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#134    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#135    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#136    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#137    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#138    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#139    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#142    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#143    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#144    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#147    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#148    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#149    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:69:20)
+#150    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#151    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#152    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following ProviderNotFoundException was thrown building Consumer2<GameProvider,
+SettingsProvider>(dirty, dependencies: [_InheritedProviderScope<GameProvider?>]):
+Error: Could not find the correct Provider<SettingsProvider> above this Consumer2<GameProvider,
+SettingsProvider> Widget
+
+This happens because you used a `BuildContext` that does not include the provider
+of your choice. There are a few common scenarios:
+
+- You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.
+
+- The provider you are trying to read is in a different route.
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
+
+  Make sure that Consumer2<GameProvider, SettingsProvider> is under your
+MultiProvider/Provider<SettingsProvider>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+
+  For example, instead of:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>().toString()),
+    );
+  }
+  ```
+
+  consider using `builder` like so:
+
+  ```
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context, child) {
+        // No longer throws
+        return Text(context.watch<Example>().toString());
+      }
+    );
+  }
+  ```
+
+If none of these solutions work, consider asking for help on StackOverflow:
+https://stackoverflow.com/questions/tagged/flutter
+
+The relevant error-causing widget was:
+  Consumer2<GameProvider, SettingsProvider>
+  Consumer2:file:///C:/Users/Will/Downloads/sudoku/lib/features/game/widgets/number_pad_widget.dart:16:12
+
+When the exception was thrown, this was the stack:
+#0      Provider._inheritedElementOf (package:provider/src/provider.dart:377:7)
+#1      Provider.of (package:provider/src/provider.dart:327:30)
+#2      Consumer2.buildWithChild (package:provider/src/consumer.dart:209:16)
+#3      SingleChildStatelessWidget.build (package:nested/nested.dart:259:41)
+#4      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#5      SingleChildStatelessElement.build (package:nested/nested.dart:279:18)
+#6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#9      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#10     SingleChildWidgetElementMixin.mount (package:nested/nested.dart:222:11)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#25     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#29     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#30     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#31     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (22 frames)
+#53     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#54     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#55     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (4 frames)
+#59     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#60     Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#61     _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#62     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#63     _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#64     RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#65     RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#66     RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#67     PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#68     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#69     RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#70     _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#71     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#72     MultiChildLayoutDelegate.layoutChild (package:flutter/src/rendering/custom_layout.dart:180:12)
+#73     _ScaffoldLayout.performLayout (package:flutter/src/material/scaffold.dart:1112:7)
+#74     MultiChildLayoutDelegate._callPerformLayout (package:flutter/src/rendering/custom_layout.dart:249:7)
+#75     RenderCustomMultiChildLayoutBox.performLayout (package:flutter/src/rendering/custom_layout.dart:420:14)
+#76     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#77     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#78     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#79     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#80     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#81     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#82     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#83     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#84     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#85     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#86     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#87     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#88     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#89     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#90     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#91     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#92     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#93     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#94     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#95     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#96     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#97     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#98     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#99     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#100    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#101    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#102    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#103    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#104    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#105    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#106    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#107    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#108    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#109    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#110    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#111    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#112    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#113    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#114    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#115    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#116    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#117    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#118    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#119    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#120    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#121    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#122    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#123    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#124    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#125    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#126    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#127    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#128    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#129    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#130    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#131    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#132    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#133    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#134    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#135    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#136    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#137    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#138    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#139    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#140    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#141    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#142    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#143    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#144    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#145    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#146    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#147    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#148    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#149    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#150    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#151    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#154    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#155    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#156    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#159    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#160    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#161    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/ui/game_screen_ui_test.dart:69:20)
+#162    testUI.<anonymous closure> (file:///C:/Users/Will/Downloads/sudoku/test/helpers/device_simulators.dart:42:21)
+#163    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#164    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+ΓòÉΓòÉΓòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Γò₧ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+00:01 +0 -6: GameScreen UI Tests  - on Laptop [E]
+  Test failed. See exception logs above.
+  The test description was:  - on Laptop
+  
+00:01 +0 -6: Some tests failed.
